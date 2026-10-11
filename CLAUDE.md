@@ -4,9 +4,9 @@ Guidance for AI assistants working in this repository.
 
 ## What this is
 
-`toolbox` (import `toolbox`, CLI `toolbox`) is an extensible toolbox for ML research. The main
-focus is SFT, DPO, GRPO-family RL, decision models, agent tracing, and serving. Pretraining is
-only a minimal example. The code also teaches design patterns (see
+`toolbox` (import `toolbox`, CLI `toolbox`) is an extensible toolbox for ML research. Keep it
+generic: describe what it ships (language models, RL, decision models, agents, GNNs, serving),
+never a "main focus"; users decide how to use it. The code also teaches design patterns (see
 `docs/concepts/design-patterns.md`), so keep them clean when you change code.
 
 ## Commands

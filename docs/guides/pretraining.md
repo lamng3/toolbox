@@ -1,6 +1,6 @@
 # Pretraining
 
-toolbox focuses on post-training. Pretraining is included as a **minimal, readable example**:
+Pretraining is included as a **minimal, readable example**:
 
 ```bash
 toolbox train experiment=lm_pretrain_tiny

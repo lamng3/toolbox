@@ -8,8 +8,9 @@
 An extensible toolbox for machine learning research. Every model, layer, loss, reward and
 training loop is a component you select by name, so trying an idea is a config change and
 comparisons stay fair. Standard libraries (Hugging Face, TRL, PyTorch Geometric, AnyJev,
-SGLang, vLLM) plug in as backends instead of being rewritten. The main focus is post-training
-and RL for language models; it also covers decision models, agent tracing, GNNs and serving.
+SGLang, vLLM) plug in as backends instead of being rewritten. It ships components for
+language models, RL, decision models, agents, GNNs and serving, and you can add your own for
+anything else.
 
 **[Documentation](https://lamng3.github.io/toolbox/)** ·
 **[Quickstart](https://lamng3.github.io/toolbox/getting-started/quickstart/)** ·
@@ -116,9 +117,7 @@ trainer.fit()
 | **Data** | local JSONL · `builtin://` offline samples · `hf://org/name?split=train` |
 
 Every selectable name is in the generated
-[component catalog](https://lamng3.github.io/toolbox/concepts/components/). Pretraining is
-only a minimal teaching example; for that, use torchtitan, Megatron-LM or nanotron and load
-the checkpoints here.
+[component catalog](https://lamng3.github.io/toolbox/concepts/components/).
 
 ## Examples
 

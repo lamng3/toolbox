@@ -3,9 +3,9 @@
 **toolbox** is an extensible toolbox for machine learning research. Every model, layer, loss,
 reward and training loop is a component you select by name, so trying an idea is a config
 change and comparisons stay fair. Standard libraries (Hugging Face, TRL, PyTorch Geometric,
-AnyJev, SGLang, vLLM) plug in as backends instead of being rewritten. The main focus is
-post-training and RL for language models; it also covers decision models, agent tracing, GNNs
-and serving.
+AnyJev, SGLang, vLLM) plug in as backends instead of being rewritten. It ships components for
+language models, RL, decision models, agents, GNNs and serving, and you can add your own for
+anything else.
 
 ```bash
 toolbox train experiment=grpo_tiny                                    # laptop CPU, seconds
@@ -89,10 +89,6 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 Every selectable name is in the [component catalog](concepts/components.md), which is generated
 from the code. Where a standard library exists, toolbox uses it as a backend; see
 [Standard libraries first](concepts/backends.md).
-
-!!! note "Scope"
-    Pretraining is only a minimal teaching example. For large-scale pretraining use
-    torchtitan, Megatron-LM or nanotron, and load the checkpoints here through Hugging Face.
 
 ## Design
 

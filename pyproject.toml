@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "toolbox"
 version = "0.1.0"
-description = "A generic, pattern-driven toolbox for pretraining and post-training (SFT, DPO, GRPO, RL) of LLMs, GNNs and decision models."
+description = "An extensible toolbox for machine learning research."
 readme = "README.md"
 license = "CC-BY-4.0"
 requires-python = ">=3.10"

@@ -1,7 +1,6 @@
 # @package _global_
-# Minimal next-token pretraining on a tiny corpus — included for completeness/teaching.
-# For real pretraining use torchtitan, Megatron-LM or nanotron; this toolbox focuses on
-# post-training.
+# Minimal next-token pretraining on a tiny corpus, as a readable example.
+# For large-scale pretraining see docs/guides/pretraining.md.
 defaults:
   - override /model: tiny_gpt
   - override /data: tiny_corpus
