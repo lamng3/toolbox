@@ -36,6 +36,14 @@ make docs                        # mkdocs build --strict
 - Configs live in `src/toolbox/configs` (shipped with the package). Each tiny experiment must
   stay CPU-runnable in seconds and be listed in `tests/integration/test_experiments.py`.
 
+## Examples
+
+Research reproductions live in `examples/<name>/` and build on toolbox without editing it:
+register components, train via `ExperimentBuilder` with `--config-dir`, add
+`tests/examples/test_<name>.py`, and cite the source with an honest
+"implemented / not implemented" section (see `examples/README.md`). Never copy code from
+unlicensed upstream repos; re-implement from the paper.
+
 ## Conventions
 
 Python ≥ 3.10, ruff line length 100, Google-style docstrings (they render in the API docs).

@@ -25,8 +25,8 @@ jobs:
           uv pip install -e ".[dev]"
       - name: Lint
         run: |
-          .venv/bin/ruff check src tests scripts recipes
-          .venv/bin/ruff format --check src tests scripts recipes
+          .venv/bin/ruff check src tests scripts recipes examples
+          .venv/bin/ruff format --check src tests scripts recipes examples
       - name: Type check
         run: .venv/bin/mypy
       - name: Test

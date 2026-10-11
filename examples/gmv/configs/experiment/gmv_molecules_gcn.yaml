@@ -1,0 +1,18 @@
+# @package _global_
+# Train the GNN whose outputs GMV will serve. Used by examples/gmv/run.py through
+# `load_config(..., config_dir="examples/gmv/configs")`: the toolbox configs plus this file.
+defaults:
+  - override /model: gnn_node_classifier
+  - override /objective: node_classification
+  - override /trainer: supervised
+
+name: gmv_molecules_gcn
+tokenizer: null
+data:
+  name: gmv_molecules        # registered by examples/gmv/data.py
+  num_molecules: 400
+  public_fraction: 0.7
+model: {hidden_dim: 32, num_layers: 2, conv: gcn, dropout: 0.0}
+trainer: {max_steps: 300, batch_size: 1, eval_every: 0, log_every: 100, device: cpu}
+optimizer: {name: adam, lr: 0.01, weight_decay: 5.0e-4}
+scheduler: {name: constant}

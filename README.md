@@ -104,6 +104,15 @@ in CI.
 | [`recipes/agent_tracing.py`](recipes/agent_tracing.py) | log an agent's decisions, attach delayed rewards, train a decision model on the trace |
 | [`recipes/custom_objective.py`](recipes/custom_objective.py) | add a new loss without touching toolbox code |
 
+## Examples
+
+[`examples/`](examples/) holds research examples built *on top of* toolbox. Each one is a paper
+or idea turned into a tested experiment without editing the library.
+
+| Example | What it shows |
+| --- | --- |
+| [`examples/gmv`](examples/gmv/) | *Serving graph-model outputs as views* (Fan, Lu, Che & Wu): answer GNN node queries from L-bisimilar counterparts in cached inference results. Exact for deterministic GNNs, with certified approximations otherwise. Reuses toolbox GNNs, trainer, registries and tracing. |
+
 ## How it fits together
 
 ```
