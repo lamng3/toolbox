@@ -54,6 +54,15 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 
     [:octicons-arrow-right-24: Extending](guides/extending.md)
 
+- **Swappable layers**
+
+    ---
+
+    Graph convs, MLP heads, norms, activations, attention and feed-forward blocks are all
+    selected by name. Swap in your own to test an architecture.
+
+    [:octicons-arrow-right-24: Swapping layers](guides/layers.md)
+
 - **Examples from papers**
 
     ---
