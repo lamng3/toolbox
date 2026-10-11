@@ -68,7 +68,7 @@ toolbox train experiment=decision_tiny data=traces data.path=runs/agent/traces d
 toolbox train experiment=dpo_tiny data=traces data.path=runs/agent/traces data.mode=preference
 ```
 
-`recipes/agent_tracing.py` runs the whole loop: act, give feedback, train on the rewarded
+`python -m examples.recipes.agent_tracing` runs the whole loop: act, give feedback, train on the rewarded
 decisions.
 
 ## Storage

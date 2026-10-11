@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.metadata
 import sys
 import types
+from pathlib import Path
 
 import pytest
 
@@ -70,3 +71,21 @@ def test_plugins_load_from_entry_points(monkeypatch: pytest.MonkeyPatch) -> None
     )
     monkeypatch.setattr(importlib.metadata, "entry_points", lambda group: [entry_point])
     assert load_plugins() == ["fake"]
+
+
+def test_config_imports_register_project_components(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from toolbox.experiment import ExperimentBuilder
+
+    (tmp_path / "my_project_losses.py").write_text(
+        "from toolbox.core.registry import OBJECTIVES\n"
+        "OBJECTIVES.register('my_project_loss')(lambda: 'built')\n"
+    )
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "path", list(sys.path))
+    builder = ExperimentBuilder.from_config(
+        {"imports": ["my_project_losses"], "objective": {"name": "my_project_loss"}}
+    )
+    assert builder.objective() == "built"
+    assert "imports" not in builder.extra

@@ -54,7 +54,16 @@ def collect_env() -> dict[str, Any]:
     if torch.cuda.is_available():
         info["gpus"] = [torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]
         info["bf16_supported"] = torch.cuda.is_bf16_supported()
-    for optional in ("transformers", "torch_geometric", "sglang", "vllm", "wandb", "deepspeed"):
+    for optional in (
+        "transformers",
+        "trl",
+        "peft",
+        "torch_geometric",
+        "anyjev",
+        "sglang",
+        "vllm",
+        "wandb",
+    ):
         try:
             module = __import__(optional)
             info[optional] = getattr(module, "__version__", "installed")

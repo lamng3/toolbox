@@ -5,7 +5,7 @@
 
 Each is trained next to the built-in it replaces, so the comparison is one line of config.
 
-    python recipes/custom_layer.py
+    python -m examples.recipes.custom_layer
 """
 
 from __future__ import annotations

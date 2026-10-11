@@ -10,12 +10,12 @@ install:  ## Create .venv and install toolbox with dev + docs extras
 	uv venv --python 3.11 && uv pip install -e ".[dev,docs]"
 
 lint:  ## Ruff lint + format check
-	$(PY) -m ruff check src tests scripts recipes examples
-	$(PY) -m ruff format --check src tests scripts recipes examples
+	$(PY) -m ruff check src tests scripts examples
+	$(PY) -m ruff format --check src tests scripts examples
 
 format:  ## Auto-format and fix lint
-	$(PY) -m ruff format src tests scripts recipes examples
-	$(PY) -m ruff check --fix src tests scripts recipes examples
+	$(PY) -m ruff format src tests scripts examples
+	$(PY) -m ruff check --fix src tests scripts examples
 
 typecheck:  ## mypy
 	$(PY) -m mypy

@@ -17,6 +17,7 @@ defaults:
   - experiment: null
 
 name: default
+imports: []          # modules that register your own components, e.g. [my_project.losses]
 seed: 42
 output_dir: runs/${name}
 

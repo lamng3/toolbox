@@ -53,10 +53,14 @@ name: slurm
 job_name: ${name}
 partition: gpu
 account: my_account
+qos: normal
+constraint: "a100|h100"
+nodes: 1
 gpus_per_node: 4
 cpus_per_task: 32
 mem: 256G
 time: "24:00:00"
+requeue: true
 setup:
   - "module load cuda/12.4"
   - "cd ${oc.env:PWD}"

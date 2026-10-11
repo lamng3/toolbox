@@ -50,7 +50,7 @@ toolbox train experiment=sft_tiny
 toolbox train experiment=grpo_tiny model.init_from=runs/sft_tiny/checkpoints/last.pt
 ```
 
-`recipes/rlhf_pipeline.sh` runs the whole thing: SFT → reward model → DPO and GRPO.
+[`examples/recipes/rlhf_pipeline.sh`](../examples/recipes.md) runs the whole thing: SFT → reward model → DPO and GRPO.
 
 ## 4. Use it from Python
 
@@ -98,3 +98,6 @@ tokenizer.name_or_path=meta-llama/Llama-3.2-1B-Instruct`.
 | `gnn_pretrain` → `gnn_finetune` | supervised | GraphMAE pretraining → node classification | CPU |
 | `lm_pretrain_tiny` | supervised | minimal next-token pretraining | CPU |
 | `sft_qwen`, `dpo_qwen`, `grpo_qwen_gsm8k` | — | the same recipes on Qwen2.5-0.5B (+LoRA) | GPU |
+
+Next: the [research workflow](research.md) shows how to go from these baselines to your own
+idea.

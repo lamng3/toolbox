@@ -29,7 +29,6 @@ from anyjev.backends.hf import HFBackend
 from rich.console import Console
 from rich.table import Table
 
-import examples.jev.data  # noqa: F401  registers the `anyjev_decisions` dataset
 from examples.jev.evaluate import evaluate
 from examples.jev.teacher import cot_teacher, l0_teacher
 from toolbox.core.env import resolve_device

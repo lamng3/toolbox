@@ -5,47 +5,82 @@
 ![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12-blue)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-An extensible toolbox for machine learning research. Every model, loss, layer and training
-loop is a swappable component, so testing an idea is a config change. Its first focus is
-**post-training and RL** (SFT, DPO, GRPO and friends for language models). It also covers
-decision models, agent tracing, GNNs, and SGLang / vLLM serving, and the same command runs on a
-laptop, a GPU VM, or a SLURM cluster.
+An extensible toolbox for machine learning research. Every model, layer, loss, reward and
+training loop is a component you select by name, so trying an idea is a config change and
+comparisons stay fair. Standard libraries (Hugging Face, TRL, PyTorch Geometric, AnyJev,
+SGLang, vLLM) plug in as backends instead of being rewritten. The main focus is post-training
+and RL for language models; it also covers decision models, agent tracing, GNNs and serving.
 
 **[Documentation](https://lamng3.github.io/toolbox/)** ·
 **[Quickstart](https://lamng3.github.io/toolbox/getting-started/quickstart/)** ·
+**[Research workflow](https://lamng3.github.io/toolbox/getting-started/research/)** ·
 **[Examples](examples/README.md)** ·
-**[Design patterns](https://lamng3.github.io/toolbox/concepts/design-patterns/)** ·
 **[Roadmap](https://lamng3.github.io/toolbox/roadmap/)**
 
 ## Contents
 
-- [Quick start](#quick-start)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Experiments, recipes and examples](#experiments-recipes-and-examples)
-- [Adding a technique](#adding-a-technique)
+- [Install](#install)
+- [How to use it](#how-to-use-it)
+- [What's included](#whats-included)
+- [Examples](#examples)
+- [How it fits together](#how-it-fits-together)
 - [Development](#development)
 - [License](#license)
 
-## Quick start
+## Install
 
 ```bash
 git clone https://github.com/lamng3/toolbox.git && cd toolbox
 uv venv --python 3.11 && uv pip install -e ".[dev]"
-
-toolbox train experiment=sft_tiny                                    # CPU, ~10 s
-toolbox train experiment=grpo_tiny model.init_from=runs/sft_tiny/checkpoints/last.pt
+toolbox env                          # versions, GPUs, which backends are installed
 ```
 
-| Where | Command |
-| --- | --- |
-| GPU, real model | `uv pip install -e ".[llm]"` then `toolbox train experiment=grpo_qwen_gsm8k` |
-| Multi-GPU node | `toolbox launch experiment=sft_qwen launcher=torchrun launcher.nproc_per_node=8` |
-| SLURM | `toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.partition=gpu --dry-run` |
-| Any override | `toolbox train experiment=dpo_tiny objective=ipo optimizer.lr=1e-5` |
+Backends are optional extras: `.[llm]` (Hugging Face, TRL, PEFT), `.[gnn]` (PyTorch
+Geometric), `.[jev]` (AnyJev), `.[serve-vllm]`, `.[serve-sglang]`, `.[tracking]`, `.[rl]`.
+See [Installation](https://lamng3.github.io/toolbox/getting-started/installation/).
+
+## How to use it
+
+**Run an experiment.** Every packaged experiment has a tiny version that runs on a CPU in
+seconds, and a real one for a GPU:
+
+```bash
+toolbox train experiment=sft_tiny                       # CPU, seconds
+toolbox train experiment=grpo_qwen_gsm8k                # one GPU, Qwen2.5-0.5B + LoRA
+toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=4
+```
+
+**Change anything from the command line.** Components are swapped by name:
+
+```bash
+toolbox train experiment=dpo_tiny objective=ipo optimizer.lr=1e-5     # another loss
+toolbox train experiment=gnn_pretrain model.conv=pyg_gat              # a PyG layer
+toolbox train experiment=grpo_qwen_gsm8k trainer.name=trl trainer.algorithm=grpo   # TRL
+toolbox list objective                                                # what's available
+```
+
+**Add your own idea** as a registered component in your own folder, then select it by name.
+Toolbox's data, training loop, logging, checkpoints and launchers are reused unchanged:
+
+```python
+from toolbox.core.registry import OBJECTIVES
+from toolbox.objectives.base import PreferenceObjective
+
+@OBJECTIVES.register("my_loss")
+class MyLoss(PreferenceObjective):
+    def __call__(self, policy_chosen, policy_rejected, ref_chosen, ref_rejected): ...
+```
+
+```bash
+toolbox train --config-dir my_idea/configs experiment=my_idea      # imports: [my_idea.losses]
+```
+
+The [research workflow](https://lamng3.github.io/toolbox/getting-started/research/) walks
+through the whole loop: baseline → change one thing → compare runs → add a component → scale
+to a cluster → write it up as an example.
 
 <details>
-<summary>From Python</summary>
+<summary>The same from Python</summary>
 
 ```python
 from toolbox.experiment import ExperimentBuilder
@@ -64,121 +99,77 @@ trainer.fit()
 
 </details>
 
-## Features
+## What's included
 
-| Area | What's included |
+| Area | Components |
 | --- | --- |
-| **Post-training** | `sft`, `dpo`, `ipo`, `slic`, `reward_bt` · TRL backend (`trainer.name=trl`) · chain stages with `model.init_from` |
-| **Online RL** | `grpo`, `ppo_clip`, `reinforce` × advantages `group_relative`, Dr. GRPO, `rloo` · k3 KL · asymmetric clipping |
-| **Rewards** | `exact_match`, `format`, `length_penalty`, composite `weighted_sum`, learned `reward_model`, `llm_judge` |
-| **Models** | any Hugging Face causal LM (+ LoRA) · `tiny_gpt` for CPU tests · GCN / GraphSAGE / GAT · actor-critic |
-| **Standard libraries** | reused, not rewritten: Hugging Face, TRL, PyTorch Geometric, AnyJev, SGLang/vLLM, Gymnasium · any `nn.Module` via `torch_module` ([why](https://lamng3.github.io/toolbox/concepts/backends/)) |
-| **Layers** | every block swappable by name ([guide](https://lamng3.github.io/toolbox/guides/layers/)) |
-| **Decision models** | option probabilities from next-token logits, debiased over rotations · CE / distillation / policy-gradient training |
-| **Agent tracing** | atomic `ActionRecord`s with nested spans and delayed feedback · traces → SFT / decision / DPO datasets |
-| **Memory** | episodic retrieval (in context) · expert iteration from traced successes (in weights) |
-| **GNN** | GraphMAE / GRACE pretraining → node-classification fine-tuning |
-| **Serving** | torch, Hugging Face, **SGLang**, **vLLM**, OpenAI-compatible HTTP · `toolbox serve`, `toolbox bench` |
-| **Scale-out** | DDP, FSDP, bf16/fp16 · `torchrun` · SLURM with auto-requeue and resume |
-| **Observability** | console, JSONL, TensorBoard, W&B · throughput, memory, `torch.profiler` traces |
+| **Post-training** | SFT · DPO, IPO, SLiC · Bradley–Terry reward models · TRL backend · stages chained with `model.init_from` |
+| **Online RL** | GRPO, PPO-clip, REINFORCE × group-relative, Dr. GRPO, RLOO advantages · PPO with GAE for environments |
+| **Rewards** | exact match, format, length penalty, weighted sums, learned reward model, LLM judge |
+| **Models and layers** | any Hugging Face causal LM (+ LoRA) · GCN / GraphSAGE / GAT and any PyG layer · any `nn.Module` · every layer [swappable by name](https://lamng3.github.io/toolbox/guides/layers/) |
+| **Decision models** | option probabilities from next-token logits, debiased over option orders · CE, distillation, policy-gradient training |
+| **Agents** | action tracing with delayed rewards · traces → SFT / decision / DPO data · episodic memory and expert iteration |
+| **GNN** | GraphMAE / GRACE pretraining → node classification |
+| **Serving** | torch, Hugging Face, SGLang, vLLM, OpenAI-compatible HTTP · `toolbox serve`, `toolbox bench` |
+| **Scale-out** | DDP, FSDP, bf16 / fp16 · torchrun · SLURM with automatic requeue and resume |
+| **Tracking** | console, JSONL, TensorBoard, W&B · throughput, memory, `torch.profiler` |
 | **Data** | local JSONL · `builtin://` offline samples · `hf://org/name?split=train` |
 
-Pretraining is only a minimal teaching example. For large-scale pretraining use torchtitan,
-Megatron-LM or nanotron, and load their checkpoints here through Hugging Face.
+Every selectable name is in the generated
+[component catalog](https://lamng3.github.io/toolbox/concepts/components/). Pretraining is
+only a minimal teaching example; for that, use torchtitan, Megatron-LM or nanotron and load
+the checkpoints here.
 
-## Architecture
+## Examples
+
+Each example is a self-contained folder with its code, configs, tests and README:
+
+| Example | What it shows |
+| --- | --- |
+| [Recipes](examples/recipes/) | RLHF pipeline, self-improvement, agent tracing, custom losses and layers |
+| [GMV](examples/gmv/) | serving GNN outputs as views via L-bisimulation (Fan et al., 2025) |
+| [Jev](examples/jev/) | training decision models: a 0.5B student gives a 1.5B teacher's decisions in one forward pass (with [AnyJev](https://github.com/nokia-applied-research/AnyJev)) |
+
+## How it fits together
 
 ```mermaid
 flowchart LR
     CLI["toolbox CLI"] --> CFG["Hydra config"]
     PY["Python API"] --> B
     CFG --> B["ExperimentBuilder"]
-    B -- "build by name" --> REG[("Registries<br/>models · data · objectives<br/>rewards · callbacks · engines")]
+    B -- "build by name" --> REG[("Registries<br/>models · layers · data<br/>objectives · rewards · trainers")]
+    REG -. backends .-> LIB["Hugging Face · TRL · PyG<br/>AnyJev · SGLang · vLLM"]
     B --> T["Trainer<br/>setup → step → eval → save"]
-    T -- events --> CB["Callbacks<br/>logging · checkpoints<br/>tracing · memory · profiler"]
-    T --> S["Strategy<br/>single · DDP · FSDP"]
+    T -- events --> CB["Callbacks<br/>logging · checkpoints · tracing · profiler"]
     CLI --> L["Launchers<br/>local · torchrun · SLURM"]
-    CLI --> E["Inference engines<br/>torch · HF · SGLang · vLLM"]
 ```
 
-Every technique is a component registered by name and selected from config. The builder
-injects dependencies, and the trainer's fixed loop emits events that callbacks observe. Each of
-the classic design patterns appears where it does real work; see the
-[map from pattern to code](https://lamng3.github.io/toolbox/concepts/design-patterns/).
-
-A typical post-training pipeline, each stage starting from the previous checkpoint:
-
-```mermaid
-flowchart LR
-    SFT["SFT"] --> DPO["DPO"]
-    SFT --> GRPO["GRPO"]
-    RM["Reward model"] -. learned reward .-> GRPO
-    GRPO -- traced rollouts --> IT["SFT on successes<br/>(expert iteration)"]
-    IT --> GRPO
-```
+A config names each component; the builder creates it from its registry and injects what it
+needs; the trainer runs a fixed loop and emits events that callbacks handle. The code is also
+a reference for classic design patterns, each [mapped to where it is
+used](https://lamng3.github.io/toolbox/concepts/design-patterns/).
 
 <details>
 <summary>Repository layout</summary>
 
 ```
 src/toolbox/
-├── core/          registry & plugins, events, retry, run context, decorators, constants
-├── data/          tokenizers, repositories (local / HF Hub), datasets, collators
-├── nn/            layers (attention, RoPE, RMSNorm, SwiGLU, graph convs) and models
+├── core/          registries and plugins, events, retry, run context, constants
+├── data/          tokenizers, data sources (local / builtin / HF Hub), datasets, collators
+├── nn/            layers by role and models built from them; PyG and HF adapters
 ├── objectives/    supervised · preference · policy · graph losses
 ├── rewards/  rl/  decision/  tracing/  memory/
-├── trainer/       base loop, trainers, callbacks, optimizers, checkpoints
+├── trainer/       base loop, trainers (incl. TRL), callbacks, optimizers, checkpoints
 ├── distributed/  serving/  launch/  eval/
-├── configs/       the Hydra config tree
+├── configs/       the Hydra config tree (experiments, models, objectives, ...)
 ├── experiment.py  ExperimentBuilder
 └── cli.py         toolbox train | launch | serve | bench | traces | list | config | env
-examples/          self-contained techniques built on toolbox
-recipes/           end-to-end workflows
+examples/          recipes and research examples, one folder each
 docs/              the documentation site
+tests/             unit tests and end-to-end tiny experiments
 ```
 
 </details>
-
-## Experiments, recipes and examples
-
-| Kind | What | Where |
-| --- | --- | --- |
-| **Experiments** | ready-made configs; the `*_tiny` ones run on CPU in seconds and double as CI tests | `toolbox train experiment=<name>` |
-| **Recipes** | multi-stage workflows: RLHF pipeline, self-improvement, agent tracing, custom loss | [`recipes/`](recipes/README.md) |
-| **Examples** | techniques built on top of toolbox, one self-contained folder each | [`examples/`](examples/README.md) |
-
-<details>
-<summary>All packaged experiments</summary>
-
-| Experiment | What it does | Runs on |
-| --- | --- | --- |
-| `sft_tiny`, `dpo_tiny`, `reward_model_tiny`, `grpo_tiny` | the RLHF stages on a bundled arithmetic task | CPU |
-| `decision_tiny`, `decision_rl_tiny` | decision model via CE / policy gradient | CPU |
-| `sft_from_traces` | expert iteration on traced rollouts | CPU |
-| `ppo_cartpole` | PPO actor-critic on CartPole | CPU |
-| `gnn_pretrain` → `gnn_finetune` | GNN pretraining then node classification | CPU |
-| `lm_pretrain_tiny` | minimal next-token pretraining | CPU |
-| `sft_qwen`, `dpo_qwen`, `grpo_qwen_gsm8k` | the same recipes on Qwen2.5-0.5B (+LoRA) | GPU |
-
-</details>
-
-## Adding a technique
-
-```python
-from toolbox.core.registry import OBJECTIVES
-from toolbox.objectives.base import PreferenceObjective
-
-@OBJECTIVES.register("my_preference_loss")
-class MyLoss(PreferenceObjective):
-    def __call__(self, policy_chosen, policy_rejected, ref_chosen, ref_rejected): ...
-```
-
-Select it with `objective=my_preference_loss`. Layers work the same way: register a module
-under its role (for example `@MLPS.register("my_head")`) and use `model.head=my_head`. See
-[Swapping layers](https://lamng3.github.io/toolbox/guides/layers/). To share it across projects, publish it under
-the `toolbox.plugins` entry point; see
-[Extending](https://lamng3.github.io/toolbox/guides/extending/). Paper reproductions go in
-[`examples/`](examples/README.md).
 
 ## Development
 

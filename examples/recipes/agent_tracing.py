@@ -6,13 +6,14 @@
 3. The trace log becomes a training set (``data=traces mode=decision``) — here keeping only
    rewarded (correct) decisions, i.e. learning from the agent's own successes.
 
-    python recipes/agent_tracing.py --out runs/agent_tracing
+    python -m examples.recipes.agent_tracing --out runs/agent_tracing
 """
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
+from typing import Any
 
 from toolbox.data.repository import load_records
 from toolbox.data.tokenization import ByteTokenizer
@@ -21,7 +22,7 @@ from toolbox.experiment import ExperimentBuilder
 from toolbox.nn.models import TinyGPT
 from toolbox.tracing import JsonlTraceStore, TracedDecisionReader, Tracer, summarize
 
-MODEL = {"d_model": 64, "n_layers": 2, "n_heads": 4, "max_seq_len": 256}
+MODEL: dict[str, Any] = {"d_model": 64, "n_layers": 2, "n_heads": 4, "max_seq_len": 256}
 
 
 def main() -> None:

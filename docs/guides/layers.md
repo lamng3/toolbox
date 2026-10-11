@@ -127,7 +127,7 @@ builder = ExperimentBuilder.from_config(load_config(["experiment=lm_pretrain_tin
 builder.with_model("tiny_gpt", d_model=64, n_layers=2, ffn="relu2").build().fit()
 ```
 
-[`recipes/custom_layer.py`](https://github.com/lamng3/toolbox/blob/main/recipes/custom_layer.py)
+[`examples/recipes/custom_layer.py`](https://github.com/lamng3/toolbox/blob/main/examples/recipes/custom_layer.py)
 runs this end to end: a custom feed-forward in the transformer and a custom head on a GNN, each
 compared with the built-in.
 

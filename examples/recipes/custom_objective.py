@@ -4,7 +4,7 @@ The same pattern works for models, datasets, rewards, callbacks, engines ... For
 package, expose the module under the ``toolbox.plugins`` entry-point group instead (see the
 "Extending" docs page) and it becomes available to the CLI and configs automatically.
 
-    python recipes/custom_objective.py
+    python -m examples.recipes.custom_objective
 """
 
 from __future__ import annotations

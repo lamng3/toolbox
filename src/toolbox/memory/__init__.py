@@ -6,7 +6,7 @@ Two ways a model "improves over time from memory":
    reward) and :func:`augment_prompt` puts the best ones in the prompt. No weights change.
 2. **In-weights** — experiences are written as action traces (:mod:`toolbox.tracing`) and
    periodically distilled back into the model (``data=traces mode=sft min_reward=1``), i.e.
-   expert iteration / STaR. ``recipes/self_improve.py`` runs this loop end-to-end.
+   expert iteration / STaR. ``examples/recipes/self_improve.py`` runs this loop end-to-end.
 
 The store is a *Repository* over records; the *Embedder* is a *Strategy* — the default hashing
 embedder needs no model, and a sentence-transformer or the policy's own hidden states can be

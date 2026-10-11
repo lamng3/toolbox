@@ -4,7 +4,7 @@ Guidance for AI assistants working in this repository.
 
 ## What this is
 
-`toolbox` (import `toolbox`, CLI `toolbox`) is a post-training / RL library and template. The
+`toolbox` (import `toolbox`, CLI `toolbox`) is an extensible toolbox for ML research. The main
 focus is SFT, DPO, GRPO-family RL, decision models, agent tracing, and serving. Pretraining is
 only a minimal example. The code also teaches design patterns (see
 `docs/concepts/design-patterns.md`), so keep them clean when you change code.
@@ -30,6 +30,9 @@ make docs                        # mkdocs build --strict
   `train_step` and add `from_builder`.
 - Side effects (logging, saving, tracing, memory) go in callbacks subscribed to `EventBus`
   events, not in loops.
+- Standard libraries first: if Hugging Face, TRL, PyG, AnyJev, etc. already do it, add an
+  adapter backend instead of reimplementing. Built-ins stay as short, readable references
+  (see `docs/concepts/backends.md`).
 - No magic numbers: use `core/constants.py` or config values.
 - Optional heavy deps (transformers, sglang, vllm, PyG, wandb) are imported lazily with
   `core.decorators.require(module, extra)`.
@@ -38,11 +41,12 @@ make docs                        # mkdocs build --strict
 
 ## Examples
 
-Research reproductions live in `examples/<name>/` and build on toolbox without editing it:
-each folder is self-contained (README, run.py, configs/, tests/). Register components,
-train via `ExperimentBuilder` with `--config-dir`, and cite the source with an honest
-"implemented / not implemented" section. List each new example as a row in the table in
-`examples/README.md`. Never copy code from
+Recipes (`examples/recipes/`) and research reproductions (`examples/<name>/`) build on
+toolbox without editing it. Each folder is self-contained (README, run.py, configs/, tests/).
+Register components, list their modules under `imports:` in the experiment config, train via
+`--config-dir` (CLI) or `ExperimentBuilder`, and cite the source with an honest
+"implemented / not implemented" section. List each new example as a row in
+`examples/README.md`; its README is rendered as a docs page. Never copy code from
 unlicensed upstream repos; re-implement from the paper.
 
 ## Docs

@@ -56,6 +56,7 @@ optimizer: {lr: 1.0e-4}
 | Start from a checkpoint | `model.init_from=runs/sft/checkpoints/last.pt` |
 | Resume a run | `trainer.resume_from=auto` |
 | Your own configs first | `--config-dir path/to/configs` |
+| Use your own components | `imports: [my_project.losses]` in the experiment file |
 
 ## Trainer settings
 

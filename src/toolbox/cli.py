@@ -15,7 +15,7 @@ from rich.table import Table
 
 app = typer.Typer(
     name="toolbox",
-    help="Train, serve and launch post-training experiments (SFT, DPO, GRPO, RL, GNN).",
+    help="An extensible toolbox for machine learning research: train, launch and serve.",
     no_args_is_help=True,
     pretty_exceptions_show_locals=False,
 )

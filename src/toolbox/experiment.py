@@ -27,6 +27,8 @@ From the shell::
 
 from __future__ import annotations
 
+import importlib
+import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -145,8 +147,14 @@ class ExperimentBuilder:
 
     @classmethod
     def from_config(cls, cfg: Any) -> ExperimentBuilder:
-        """Create a builder from a (Hydra/OmegaConf or plain) config mapping."""
+        """Create a builder from a (Hydra/OmegaConf or plain) config mapping.
+
+        Modules listed under ``imports`` are imported first, so components they register
+        (a dataset, a loss, a layer in your project) can be selected by name from the CLI,
+        ``toolbox launch`` and SLURM jobs without packaging them as a plugin.
+        """
         data = _to_container(cfg)
+        import_modules(data.get("imports") or [])
         builder = cls(
             data.get("name", "experiment"), data.get("seed", DEFAULT_SEED), data.get("output_dir")
         )
@@ -158,7 +166,7 @@ class ExperimentBuilder:
         builder.extra = {
             k: v
             for k, v in data.items()
-            if k not in (*COMPONENT_KEYS, "callbacks", "name", "seed", "output_dir")
+            if k not in (*COMPONENT_KEYS, "callbacks", "imports", "name", "seed", "output_dir")
         }
         return builder
 
@@ -294,6 +302,18 @@ def load_config(overrides: Sequence[str] = (), config_dir: str | Path | None = N
         overrides.append(f"hydra.searchpath=[file://{Path(config_dir).resolve()}]")
     with initialize_config_dir(config_dir=str(CONFIG_DIR), version_base=None):
         return compose(config_name=PRIMARY_CONFIG, overrides=overrides)
+
+
+def import_modules(modules: Sequence[str]) -> None:
+    """Import modules that register components, e.g. ``examples.jev.data``.
+
+    The current directory is searched too (as with ``python -m``), so modules of the project
+    you run from are found by the ``toolbox`` command.
+    """
+    if modules and str(Path.cwd()) not in sys.path:
+        sys.path.insert(0, str(Path.cwd()))
+    for module in modules:
+        importlib.import_module(module)
 
 
 def run_experiment(cfg: Any) -> Metrics:

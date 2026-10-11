@@ -18,13 +18,14 @@ error naming the extra to install.
 
 | Extra | Installs | Needed for |
 | --- | --- | --- |
-| `llm` | transformers, datasets, peft, accelerate | Hugging Face models/tokenizers, LoRA, `hf://` datasets |
+| `llm` | transformers, datasets, peft, accelerate, trl | Hugging Face models/tokenizers, LoRA, `hf://` datasets, the TRL trainer |
 | `serve-sglang` | sglang | `SGLangEngine`, `toolbox serve --engine sglang` |
 | `serve-vllm` | vllm | `VLLMEngine`, `toolbox serve --engine vllm` |
-| `gnn` | torch-geometric | `planetoid` datasets (Cora, CiteSeer, PubMed) |
+| `gnn` | torch-geometric | PyG layers and models (`pyg_*`, `pyg_model`), `planetoid` datasets |
+| `jev` | anyjev, transformers, peft | the [Jev decision-model pipeline](../examples/jev.md) |
+| `embeddings` | sentence-transformers | `SentenceTransformerEmbedder` for memory |
 | `rl` | gymnasium | `GymnasiumAdapter` environments |
 | `tracking` | wandb, tensorboard | `wandb` / `tensorboard` callbacks |
-| `dist` | deepspeed | DeepSpeed integration |
 | `docs` | mkdocs-material, mkdocstrings | building this site |
 
 ```bash

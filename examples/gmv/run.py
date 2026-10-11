@@ -34,7 +34,6 @@ import torch
 from rich.console import Console
 from rich.table import Table
 
-import examples.gmv.data  # noqa: F401  registers the `gmv_molecules` dataset
 from examples.gmv.bisim import conv_name, model_conv, rounds_for
 from examples.gmv.selection import VIEW_SELECTORS
 from examples.gmv.service import FALLBACK, VIEW_APPROX, VIEW_EXACT, GMVService

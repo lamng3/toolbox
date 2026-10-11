@@ -1,15 +1,16 @@
 # @package _global_
-# Train the GNN whose outputs GMV will serve. Used by examples/gmv/run.py through
-# `load_config(..., config_dir="examples/gmv/configs")`: the toolbox configs plus this file.
+# Train the GNN whose outputs GMV will serve. Used by examples/gmv/run.py, or directly:
+#   toolbox train --config-dir examples/gmv/configs experiment=gmv_molecules_gcn
 defaults:
   - override /model: gnn_node_classifier
   - override /objective: node_classification
   - override /trainer: supervised
 
 name: gmv_molecules_gcn
+imports: [examples.gmv.data]   # registers the gmv_molecules dataset
 tokenizer: null
 data:
-  name: gmv_molecules        # registered by examples/gmv/data.py
+  name: gmv_molecules
   num_molecules: 400
   public_fraction: 0.7
 # The GNN is toolbox's `gnn_node_classifier` (src/toolbox/nn/models/gnn.py). With head: null

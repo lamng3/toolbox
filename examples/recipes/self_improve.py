@@ -5,7 +5,7 @@ Each round:
   2. SFT on the successful samples only (``data=traces mode=sft min_reward=1``).
   3. The SFT checkpoint seeds the next round.
 
-    python recipes/self_improve.py --rounds 2 --out runs/self_improve
+    python -m examples.recipes.self_improve --rounds 2 --out runs/self_improve
 """
 
 from __future__ import annotations

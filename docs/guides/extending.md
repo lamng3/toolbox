@@ -29,9 +29,22 @@ builder = ExperimentBuilder.from_config(load_config(["experiment=grpo_tiny"]))
 builder.with_reward("contains_keyword", keyword="because").build().fit()
 ```
 
-For the CLI, add a config file for it (`configs/reward/contains_keyword.yaml` in your
-`--config-dir`) and make sure its module is imported. The simplest way is to ship it as a
-plugin (see below); then `toolbox train experiment=grpo_tiny reward=contains_keyword` works.
+From the CLI, list the module under `imports` in your experiment config, so it is imported
+before the run is built:
+
+```yaml title="my_project/configs/experiment/my_run.yaml"
+# @package _global_
+defaults:
+  - /experiment/grpo_tiny
+imports: [my_project.rewards]
+reward: {name: contains_keyword, keyword: because}
+```
+
+```bash
+toolbox train --config-dir my_project/configs experiment=my_run
+```
+
+To share components across projects, ship them as a plugin (below).
 
 ## Registries
 
@@ -89,7 +102,8 @@ You don't have to register anything to train your own model:
 
 Put it in `examples/<name>/`, self-contained, with its own `README.md` (method, citation,
 results, what isn't reproduced), `run.py`, `configs/` and `tests/`. Then add one row to the
-table in `examples/README.md` and in the docs' [Examples](../examples/index.md) page.
+table in `examples/README.md`; the README becomes a page under [Examples](../examples/index.md).
+The [research workflow](../getting-started/research.md) walks through it.
 [`examples/gmv`](https://github.com/lamng3/toolbox/tree/main/examples/gmv) is the template.
 
 ## Shipping it as a plugin

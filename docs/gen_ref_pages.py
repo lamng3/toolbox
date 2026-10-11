@@ -2,7 +2,7 @@
 
 * one API-reference page per module,
 * the component catalog (from the registries),
-* one page per example, rendered from ``examples/<name>/README.md`` (the single source).
+* the examples index and one page per example, rendered from the READMEs in ``examples/``.
 """
 
 import re
@@ -40,23 +40,32 @@ with mkdocs_gen_files.open("concepts/components.md", "w") as catalog:
     catalog.write(render_markdown())
 
 
-# Examples: each README is rendered as a docs page; relative links point to GitHub.
+# Examples: examples/README.md becomes the index and each examples/<name>/README.md a page.
+# Links to other examples point to their pages; any other relative link points to GitHub.
 RELATIVE_LINK = re.compile(r"\]\((?!https?://|#|mailto:)([^)]+)\)")
+EXAMPLE_NAMES = sorted(readme.parent.name for readme in EXAMPLES.glob("*/README.md"))
 
 
-def github_link(example: str, target: str) -> str:
+def rewrite_link(folder: str, target: str) -> str:
+    if not folder and target.rstrip("/") in EXAMPLE_NAMES:
+        return f"]({target.rstrip('/')}.md)"
     kind = "tree" if target.endswith("/") else "blob"
-    return f"]({REPO_URL}/{kind}/main/examples/{example}/{target.rstrip('/')})"
+    path = "/".join(p for p in ("examples", folder, target.rstrip("/")) if p)
+    return f"]({REPO_URL}/{kind}/main/{path})"
 
 
+def render_readme(readme: Path, page: str, folder: str) -> str:
+    text = RELATIVE_LINK.sub(lambda m: rewrite_link(folder, m.group(1)), readme.read_text())
+    with mkdocs_gen_files.open(f"examples/{page}", "w") as fd:
+        fd.write(text)
+    mkdocs_gen_files.set_edit_path(f"examples/{page}", readme.relative_to(ROOT))
+    return text.splitlines()[0].lstrip("# ").split(":")[0]
+
+
+render_readme(EXAMPLES / "README.md", "index.md", "")
 example_nav = ["* [Overview](index.md)\n"]
-for readme in sorted(EXAMPLES.glob("*/README.md")):
-    name = readme.parent.name
-    text = RELATIVE_LINK.sub(lambda m, n=name: github_link(n, m.group(1)), readme.read_text())
-    with mkdocs_gen_files.open(f"examples/{name}.md", "w") as page:
-        page.write(text)
-    mkdocs_gen_files.set_edit_path(f"examples/{name}.md", readme.relative_to(ROOT))
-    title = text.splitlines()[0].lstrip("# ").split(":")[0]
+for name in EXAMPLE_NAMES:
+    title = render_readme(EXAMPLES / name / "README.md", f"{name}.md", name)
     example_nav.append(f"* [{title}]({name}.md)\n")
 
 with mkdocs_gen_files.open("examples/SUMMARY.md", "w") as nav_file:

@@ -16,24 +16,22 @@ The toolbox grows by adding components behind the existing interfaces. Planned n
 ## Decision models and agents
 
 - [ ] Adaptive rotation budget: read fewer rotations, calibrated without labels.
-- [ ] Escalation to chain-of-thought when the one-pass decision is uncertain; distil the CoT
-      answers back into one-pass decisions (Tacit-style self-distillation loop).
-- [ ] An OpenTelemetry exporter for `ActionRecord`s.
+- [ ] Escalation to chain-of-thought when the one-pass decision is uncertain, with the CoT
+      answers distilled back into one-pass decisions (Tacit-style loop on top of
+      [`examples/jev`](examples/jev.md)).
 - [ ] Vector-database `RecordRepository` backends for memory.
 
-## Reuse more standard libraries
+## More standard libraries as backends
 
 - [x] PyTorch Geometric layers and models, TRL trainers, AnyJev readout, `torch.optim` /
-      `transformers` schedules, sentence-transformers embeddings, any `nn.Module`
-- [ ] Accelerate / DeepSpeed as distribution strategies
-- [ ] OpenTelemetry exporter for agent traces
-- [ ] lm-evaluation-harness tasks as evaluators
-- [ ] Math verifiers (e.g. `math-verify`) as rewards
+      `transformers` schedules, sentence-transformers embeddings, any `nn.Module`.
+- [ ] Accelerate / DeepSpeed ZeRO as distribution strategies; FSDP2.
+- [ ] OpenTelemetry exporter for agent traces.
+- [ ] lm-evaluation-harness tasks as evaluators.
+- [ ] Math verifiers (e.g. `math-verify`) as rewards.
 
 ## Infrastructure
 
 - [ ] KV cache + continuous batching in the reference `torch` engine (an inference-optimisation
       teaching track).
-- [ ] DeepSpeed ZeRO strategy; FSDP2.
 - [ ] Hydra multirun + submitit sweeps.
-- [ ] Evaluation harness integration (lm-eval-harness tasks as evaluators).

@@ -6,6 +6,7 @@ defaults:
   - override /trainer: supervised
 
 name: jev_student
+imports: [examples.jev.data]   # registers the anyjev_decisions dataset
 tokenizer: {name: hf, name_or_path: Qwen/Qwen2.5-0.5B-Instruct}
 model:
   name: hf_causal_lm
@@ -13,7 +14,7 @@ model:
   dtype: float32
   lora: {r: 16, lora_alpha: 32, lora_dropout: 0.0, target_modules: all-linear, task_type: CAUSAL_LM}
 data:
-  name: anyjev_decisions       # registered by examples/jev/data.py
+  name: anyjev_decisions
   path: ???                    # teacher-labelled JSONL written by run.py
   permute: true
   eval_fraction: 0.2           # must match run.py, which evaluates on the same held-out split

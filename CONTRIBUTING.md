@@ -38,8 +38,8 @@ troubleshooting note in the installation docs.
   docs in the same commit. `tests/test_docs.py` fails CI when a component lacks a docstring,
   an experiment or CLI command isn't mentioned in `docs/`, a package is missing from the
   architecture page, a page is missing from the nav, or an example isn't indexed.
-- **Examples** live in `examples/<name>/` with their own tests, and are listed in
-  `examples/README.md` and `docs/examples/index.md`.
+- **Examples** live in `examples/<name>/` with their own tests and README, and are listed in
+  `examples/README.md`. The docs pages for examples are generated from those READMEs.
 - Keep tiny experiments CPU-runnable in seconds. They are the integration test suite.
 
 ## Commit messages

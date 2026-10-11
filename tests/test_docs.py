@@ -2,7 +2,7 @@
 
 The component catalog (``toolbox.catalog``) is generated at build time, so registry names are
 always listed. These checks cover what generation can't: docstrings, hand-written guides,
-navigation and the examples index.
+navigation and the examples index (``examples/README.md``, also rendered as the docs page).
 """
 
 from __future__ import annotations
@@ -70,7 +70,5 @@ def test_every_docs_page_is_in_the_nav() -> None:
     "example", sorted(p.name for p in EXAMPLES.iterdir() if (p / "README.md").exists())
 )
 def test_every_example_is_indexed(example: str) -> None:
-    examples_index = (EXAMPLES / "README.md").read_text(encoding="utf-8")
-    docs_index = (DOCS / "examples" / "index.md").read_text(encoding="utf-8")
-    assert f"({example}/)" in examples_index, f"add a row for {example} to examples/README.md"
-    assert f"({example}.md)" in docs_index, f"add a row for {example} to docs/examples/index.md"
+    index = (EXAMPLES / "README.md").read_text(encoding="utf-8")
+    assert f"({example}/)" in index, f"add a row for {example} to examples/README.md"

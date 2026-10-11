@@ -45,8 +45,7 @@ src/toolbox/
 ├── catalog.py     renders the component catalog for the docs
 └── cli.py         the `toolbox` command
 
-examples/<name>/   self-contained techniques built on toolbox (code, configs, tests, README)
-recipes/           end-to-end workflows using the public API
+examples/<name>/   recipes and research examples built on toolbox (code, configs, tests, README)
 docs/              this site; the API reference and component catalog are generated
 ```
 

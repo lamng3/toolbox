@@ -28,7 +28,7 @@ During RL the `memory_writer` callback stores every rollout with `reward ≥ min
 3. Repeat from the new checkpoint.
 
 ```bash
-python recipes/self_improve.py --rounds 3
+python -m examples.recipes.self_improve --rounds 3
 ```
 
 This is the STaR / ReST / rejection-sampling fine-tuning family. The same trace log also
