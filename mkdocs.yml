@@ -106,7 +106,7 @@ nav:
       - Profiling: guides/profiling.md
       - Pretraining: guides/pretraining.md
       - Extending the toolbox: guides/extending.md
-  - Examples: examples/index.md
+  - Examples: examples/
   - API reference: reference/
   - Roadmap: roadmap.md
   - Contributing: contributing.md

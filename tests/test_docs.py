@@ -21,6 +21,7 @@ DOCS = ROOT / "docs"
 EXAMPLES = ROOT / "examples"
 PACKAGE = ROOT / "src" / "toolbox"
 GENERATED_PAGES = {"concepts/components.md"}  # written by docs/gen_ref_pages.py
+LITERATE_SECTIONS = ("reference/", "examples/")  # navigated via generated SUMMARY.md
 
 
 def docs_text() -> str:
@@ -60,7 +61,7 @@ def test_every_docs_page_is_in_the_nav() -> None:
     nav = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
     pages = {p.relative_to(DOCS).as_posix() for p in DOCS.rglob("*.md")}
     listed = set(re.findall(r":\s*([\w/.-]+\.md)\s*$", nav, flags=re.MULTILINE))
-    orphans = sorted(pages - listed)
+    orphans = sorted(p for p in pages - listed if not p.startswith(LITERATE_SECTIONS))
     assert not orphans, f"pages missing from mkdocs.yml nav: {orphans}"
     assert listed >= GENERATED_PAGES
 
@@ -72,4 +73,4 @@ def test_every_example_is_indexed(example: str) -> None:
     examples_index = (EXAMPLES / "README.md").read_text(encoding="utf-8")
     docs_index = (DOCS / "examples" / "index.md").read_text(encoding="utf-8")
     assert f"({example}/)" in examples_index, f"add a row for {example} to examples/README.md"
-    assert f"examples/{example}" in docs_index, f"add a row for {example} to docs/examples/index.md"
+    assert f"({example}.md)" in docs_index, f"add a row for {example} to docs/examples/index.md"

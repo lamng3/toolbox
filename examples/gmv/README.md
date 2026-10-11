@@ -34,6 +34,26 @@ toolbox traces runs/gmv/traces                               # per-variant route
 pytest examples/gmv                                          # the exactness checks
 ```
 
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph Offline
+        M["Trained GNN"] --> V["Materialise views<br/>memory graph + colours + outputs"]
+        V --> MIN["GVMin<br/>collapse equivalent nodes"]
+    end
+    subgraph Online["Online, per query v_t"]
+        Q["Query node v_t"] --> MATCH["Colour G^R(v_t)<br/>bisimulation matching"]
+        MATCH --> SEL["GVSel<br/>pick ≤ k views"]
+        SEL --> EX{"full-depth match?"}
+        EX -- yes --> A1["view_exact<br/>cached output, exact"]
+        EX -- no --> AP{"match ≥ min_rounds?"}
+        AP -- yes --> A2["view_approx<br/>with depth certificate"]
+        AP -- no --> A3["fallback<br/>run GNN on G^R(v_t)"]
+    end
+    MIN --> SEL
+```
+
 ## How the paper maps onto toolbox
 
 | Paper | Here | Toolbox piece used |
