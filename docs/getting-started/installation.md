@@ -35,10 +35,15 @@ uv pip install -e ".[llm,serve-vllm]"        # + inference with vLLM
 ## Troubleshooting
 
 `ModuleNotFoundError: No module named 'toolbox'` on macOS
-:   Some macOS setups mark files inside `.venv` as *hidden*, and Python 3.11.14+ skips
-    hidden `.pth` files, which breaks editable installs. Run
-    `chflags nohidden .venv/lib/python*/site-packages/*.pth`, or `export PYTHONPATH=src`
-    (the Makefile does this for you).
+:   The checkout is probably inside an iCloud-synced folder (Desktop or Documents with
+    "Desktop & Documents Folders" turned on). iCloud marks everything inside dot-directories
+    such as `.venv` as *hidden*, and Python ≥ 3.11.9 / 3.12 deliberately skips hidden `.pth`
+    files, so the editable install disappears. You can confirm it with
+    `ls -lO .venv/lib/python*/site-packages/*.pth`, which shows `hidden`. The fix is to move
+    the repository out of iCloud (for example to `~/code/toolbox`), run `chflags -R nohidden .`
+    once, and recreate the venv. A `chflags nohidden` alone doesn't stick, because iCloud
+    re-applies the flag. Keeping `.git` and multi-GB virtualenvs out of iCloud sync is a good
+    idea anyway.
 
 CUDA build of PyTorch
 :   Install the wheel that matches your driver first, e.g.

@@ -1,6 +1,5 @@
 # Common developer tasks. `make help` lists them.
 PY ?= .venv/bin/python
-export PYTHONPATH := src
 
 .PHONY: help install lint format typecheck test test-fast docs docs-serve check clean
 

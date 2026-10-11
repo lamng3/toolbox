@@ -12,7 +12,6 @@ only a minimal example. The code also teaches design patterns (see
 ## Commands
 
 ```bash
-export PYTHONPATH=src            # macOS hides .pth files in .venv; the Makefile sets this
 make test-fast                   # unit tests
 make test                        # + end-to-end tiny experiments (~1 min)
 make lint typecheck              # ruff + mypy (both must pass)

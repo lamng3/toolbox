@@ -9,8 +9,8 @@ pre-commit install
 make check          # lint + typecheck + tests + docs build: the same as CI
 ```
 
-On macOS, if imports fail with `No module named 'toolbox'`, see the troubleshooting note in
-the installation docs (`export PYTHONPATH=src`; the Makefile already sets it).
+On macOS, keep the checkout outside iCloud-synced folders (Desktop/Documents). See the
+troubleshooting note in the installation docs.
 
 ## Workflow
 
