@@ -31,7 +31,7 @@ python -m examples.gmv.run                                   # GCN, exact answer
 python -m examples.gmv.run --min-rounds 2                    # allow certified approximations
 python -m examples.gmv.run model.conv=sage --views 1000      # any toolbox override works
 toolbox traces runs/gmv/traces                               # per-variant routes and latency
-pytest tests/examples/test_gmv.py                            # the exactness checks
+pytest examples/gmv                                          # the exactness checks
 ```
 
 ## How the paper maps onto toolbox
@@ -53,7 +53,7 @@ Two nodes are L-bisimilar when they have the same features and their neighbourho
 recursively for L hops. For a deterministic L-layer GNN, they then get the same output
 (Corollary 4), so a view's cached output answers the query *exactly*. We compute this with
 **counting** colour refinement, where neighbour multisets play the role of the paper's scaling
-factors `S_e`. `tests/examples/test_gmv.py` checks the condition on real model outputs:
+factors `S_e`. `tests/test_gmv.py` checks the condition on real model outputs:
 
 | Layer | Rounds needed | Max output gap within a colour class |
 | --- | --- | --- |

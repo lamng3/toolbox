@@ -106,12 +106,9 @@ in CI.
 
 ## Examples
 
-[`examples/`](examples/) holds research examples built *on top of* toolbox. Each one is a paper
-or idea turned into a tested experiment without editing the library.
-
-| Example | What it shows |
-| --- | --- |
-| [`examples/gmv`](examples/gmv/) | *Serving graph-model outputs as views* (Fan, Lu, Che & Wu): answer GNN node queries from L-bisimilar counterparts in cached inference results. Exact for deterministic GNNs, with certified approximations otherwise. Reuses toolbox GNNs, trainer, registries and tracing. |
+Techniques built on top of toolbox, one self-contained folder each. The index is
+[`examples/README.md`](examples/README.md). The first is
+[GMV](examples/gmv/): serving GNN outputs as views.
 
 ## How it fits together
 

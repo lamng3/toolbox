@@ -76,7 +76,7 @@ check_untyped_defs = true
 files = ["src/toolbox", "examples"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples"]
 pythonpath = ["."]
 addopts = "-q"
 markers = [

@@ -39,9 +39,10 @@ make docs                        # mkdocs build --strict
 ## Examples
 
 Research reproductions live in `examples/<name>/` and build on toolbox without editing it:
-register components, train via `ExperimentBuilder` with `--config-dir`, add
-`tests/examples/test_<name>.py`, and cite the source with an honest
-"implemented / not implemented" section (see `examples/README.md`). Never copy code from
+each folder is self-contained (README, run.py, configs/, tests/). Register components,
+train via `ExperimentBuilder` with `--config-dir`, and cite the source with an honest
+"implemented / not implemented" section. List each new example as a row in the table in
+`examples/README.md`. Never copy code from
 unlicensed upstream repos; re-implement from the paper.
 
 ## Conventions
