@@ -26,7 +26,8 @@ src/toolbox/
 ├── core/          registry (plugins + factory), events (observer), retry, run context (singleton),
 │                  decorators, constants, env/device/seed helpers
 ├── data/          tokenizers, repositories (local / HF Hub), dataset factories, collators
-├── nn/            layers (attention, RoPE, RMSNorm, SwiGLU, GCN/SAGE/GAT, MLP) and models
+├── nn/            layers registered by role (graph_conv, mlp, norm, activation, feedforward,
+│                  attention) and models whose slots take layer specs
 ├── objectives/    losses grouped by family: supervised, preference, policy, graph
 ├── rewards/       verifiable, composite, learned, LLM-judge rewards
 ├── rl/            advantage estimators, text rollouts, environments, buffers

@@ -13,10 +13,12 @@ paper records them as edge "scaling factors" ``S_e``. Here they are part of the 
 colours already imply equal aggregated messages.
 
 Rounds needed: a node's ``L``-layer output depends on its ``L``-hop neighbourhood, so ``L``
-rounds suffice for mean/sum/attention layers (GraphSAGE, GAT, GIN). GCN's symmetric
-normalisation also uses the degrees of the nodes ``L`` hops away, which costs one extra round
+rounds suffice for mean/sum/attention layers (GraphSAGE, GAT). GCN's symmetric normalisation
+also uses the degrees of the nodes ``L`` hops away, which costs one extra round
 (``rounds_for(L, "gcn") = L + 1``). The paper instead stores degree scaling factors for GCN
-(its Table I). The extra round is the conservative, metadata-free equivalent.
+(its Table I). The extra round is the conservative, metadata-free equivalent. Any other layer
+(including one you registered yourself) also gets the extra round, because extra rounds
+only make matching stricter, never wrong.
 
 Colours are stable 64-bit hashes (blake2b), so views materialised offline can be matched
 against queries computed later or in another process.
@@ -26,6 +28,8 @@ from __future__ import annotations
 
 import hashlib
 import struct
+from collections.abc import Mapping
+from typing import Any
 
 import torch
 
@@ -33,12 +37,18 @@ from examples.gmv.graph import adjacency_lists
 
 Colour = int
 DIGEST_BYTES = 8
-DEGREE_NORMALISED_CONVS = frozenset({"gcn"})
+NEIGHBOUR_DEGREE_FREE_CONVS = frozenset({"sage", "gat"})
 
 
-def rounds_for(num_layers: int, conv: str = "gcn") -> int:
+def conv_name(conv: str | Mapping[str, Any]) -> str:
+    """Layer name from a spec: ``"gcn"`` or ``{"name": "gat", "heads": 8}``."""
+    return conv if isinstance(conv, str) else str(conv["name"])
+
+
+def rounds_for(num_layers: int, conv: str | Mapping[str, Any] = "gcn") -> int:
     """Refinement rounds that make equal colours imply equal outputs for this layer type."""
-    return num_layers + (1 if conv in DEGREE_NORMALISED_CONVS else 0)
+    extra = 0 if conv_name(conv) in NEIGHBOUR_DEGREE_FREE_CONVS else 1
+    return num_layers + extra
 
 
 def _digest(payload: bytes) -> Colour:

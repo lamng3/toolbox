@@ -1,9 +1,11 @@
 # toolbox
 
-**toolbox** is a library and template for getting from an idea to experiment results quickly in
-**post-training**: SFT, DPO, GRPO and other RL methods for language models. It also covers
-AnyJev-style **decision models**, **agent tracing** (log actions, then train on them), memory-driven
-self-improvement, GNN pre-/post-training, and SGLang/vLLM serving.
+**toolbox** is an extensible toolbox for machine learning research: a library and template for
+getting from an idea to experiment results quickly. Every model, loss, layer and training loop
+is a swappable component. Its first focus is **post-training and RL** (SFT, DPO, GRPO and other
+RL methods for language models). It also covers AnyJev-style **decision models**, **agent
+tracing** (log actions, then train on them), memory-driven self-improvement, GNN
+pre-/post-training, and SGLang/vLLM serving.
 
 Plug in a GPU, run one command, get results. The same command runs on a laptop CPU, a cloud VM, or a
 SLURM cluster.
@@ -71,6 +73,7 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 | Advantage estimators | `group_relative` (GRPO), `dr_grpo` (unscaled), `rloo`, `batch_normalized`, GAE |
 | Rewards | `exact_match`, `format`, `length_penalty`, `weighted_sum` (composite), `reward_model`, `llm_judge` |
 | Models | any Hugging Face causal LM (+ LoRA via PEFT), `tiny_gpt` (Llama-style, from scratch), reward model, GNNs (GCN / GraphSAGE / GAT), actor-critic |
+| Layers | every block is [swappable by name](guides/layers.md): graph convs, MLP heads, norms, activations, attention, feed-forward, built-in or your own |
 | Decision models | rotation-debiased readout, `decision_ce`, `decision_distill`, `decision_pg`, flip-rate evaluation |
 | Agents | `Tracer` spans, `@traced`, delayed feedback, trace → SFT / decision / preference datasets, episodic memory |
 | GNN | self-supervised pretraining (`masked_feature` GraphMAE, `graph_contrastive` GRACE) → node classification |

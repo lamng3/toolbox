@@ -2,6 +2,7 @@
 
     python -m examples.gmv.run                                  # defaults: GCN, 400 molecules
     python -m examples.gmv.run model.conv=gat --views 500 --k 5  # any toolbox override works
+    python -m examples.gmv.run 'model.head={name:mlp,hidden_dims:[32]}' model.norm=layernorm
 
 Steps:
   1. Train a 2-layer GNN with the toolbox trainer (config ``experiment=gmv_molecules_gcn``).
@@ -26,13 +27,14 @@ import random
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import torch
 from rich.console import Console
 from rich.table import Table
 
 import examples.gmv.data  # noqa: F401  registers the `gmv_molecules` dataset
-from examples.gmv.bisim import rounds_for
+from examples.gmv.bisim import conv_name, rounds_for
 from examples.gmv.selection import VIEW_SELECTORS
 from examples.gmv.service import FALLBACK, VIEW_APPROX, VIEW_EXACT, GMVService
 from examples.gmv.views import GraphModelView, minimize, sample_views
@@ -61,7 +63,7 @@ VARIANTS = (
 )
 
 
-def train_model(overrides: list[str], out: Path) -> tuple[torch.nn.Module, dict, int, str]:
+def train_model(overrides: list[str], out: Path) -> tuple[torch.nn.Module, dict, int, Any]:
     cfg = load_config(
         [f"experiment={EXPERIMENT}", f"output_dir={out / 'train'}", *overrides],
         config_dir=HERE / "configs",
@@ -71,7 +73,8 @@ def train_model(overrides: list[str], out: Path) -> tuple[torch.nn.Module, dict,
     trainer.fit()
     graph = builder.data().train[0]
     model = trainer.unwrapped_model.cpu().eval()
-    return model, graph, int(cfg.model.num_layers), str(cfg.model.conv)
+    conv = builder.run_config["model"]["conv"]  # a layer spec: "gcn" or {"name": ..., ...}
+    return model, graph, int(cfg.model.num_layers), conv
 
 
 def run_variant(
@@ -189,7 +192,7 @@ def main() -> None:
     queries = random.Random(args.seed).sample(private, min(args.queries, len(private)))
     full = {
         "num_queries": len(queries),
-        "conv": conv,
+        "conv": conv_name(conv),
         "rounds": rounds,
         "time_ms": full_ms,
         "accuracy": float((full_logits[queries].argmax(-1) == graph["y"][queries]).float().mean()),

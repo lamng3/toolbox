@@ -129,3 +129,11 @@ def test_service_routes_and_traces(graph: dict) -> None:
         torch.testing.assert_close(a.logits, full[a.node], atol=1e-5, rtol=0)
     records = store.records()
     assert len(records) == len(queries) and {r.action for r in records} <= {VIEW_EXACT, FALLBACK}
+
+
+def test_matching_depth_for_layer_specs() -> None:
+    """Degree-free layers need L rounds; GCN and unknown/custom layers get the safe L + 1."""
+    assert rounds_for(2, "sage") == 2
+    assert rounds_for(2, {"name": "gat", "heads": 8}) == 2
+    assert rounds_for(2, "gcn") == 3
+    assert rounds_for(2, {"name": "my_custom_conv"}) == 3

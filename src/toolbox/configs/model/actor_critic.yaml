@@ -1,3 +1,6 @@
 name: actor_critic
 hidden_dims: [64, 64]
-init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt
+activation: tanh
+actor: null           # null = MLP(hidden_dims); or any MLPS spec / your registered network
+critic: null
+init_from: null  # checkpoint of a previous stage

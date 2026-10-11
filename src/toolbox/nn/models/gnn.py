@@ -3,6 +3,16 @@
 The workflow mirrors LLMs: *pretrain* a :class:`GNNEncoder` with a self-supervised objective
 (masked feature reconstruction or graph contrastive learning) using :class:`GNNPretrainer`, then
 *post-train* a :class:`GNNNodeClassifier` initialised from the pretrained encoder weights.
+
+Every building block is a swappable layer spec: the message-passing layer (``conv``, from
+``GRAPH_CONVS``), the ``activation``, an optional ``norm`` between layers, and the output
+``head`` / ``decoder`` / ``projector`` (from ``MLPS``). For example::
+
+    model:
+      name: gnn_node_classifier
+      conv: {name: gat, heads: 8}
+      norm: layernorm
+      head: {name: mlp, hidden_dims: [64], dropout: 0.2}
 """
 
 from __future__ import annotations
@@ -14,37 +24,52 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from toolbox.core.registry import MODELS
-from toolbox.nn.layers import MLP
-from toolbox.nn.layers.graph import GRAPH_CONVS
+from toolbox.core.registry import ACTIVATIONS, GRAPH_CONVS, MLPS, MODELS, NORMS
+from toolbox.nn.layers.common import LayerSpec, build_layer
 
 ENCODER_PREFIX = "encoder."
 
 
 @MODELS.register("gnn_encoder")
 class GNNEncoder(nn.Module):
-    """Stack of message-passing layers: ``conv → activation → dropout`` (last layer is bare)."""
+    """Stack of ``conv → norm → activation → dropout`` blocks (the last conv is bare).
+
+    Args:
+        conv: graph layer spec, e.g. ``"gcn"``, ``"sage"``, ``{"name": "gat", "heads": 8}``,
+            or any layer you registered in ``GRAPH_CONVS``.
+        activation: activation spec (``ACTIVATIONS``).
+        norm: optional norm spec between layers (``NORMS``), e.g. ``"layernorm"``.
+    """
 
     def __init__(
         self,
         in_dim: int,
         hidden_dim: int = 64,
         num_layers: int = 2,
-        conv: str = "gcn",
+        conv: LayerSpec = "gcn",
         dropout: float = 0.5,
+        activation: LayerSpec = "relu",
+        norm: LayerSpec | None = None,
     ) -> None:
         super().__init__()
-        conv_cls = GRAPH_CONVS[conv]
         dims = [in_dim] + [hidden_dim] * num_layers
-        self.convs = nn.ModuleList(conv_cls(a, b) for a, b in itertools.pairwise(dims))
+        self.convs = nn.ModuleList(
+            build_layer(GRAPH_CONVS, conv, in_dim=a, out_dim=b) for a, b in itertools.pairwise(dims)
+        )
+        hidden_blocks = num_layers - 1
+        self.norms = nn.ModuleList(
+            build_layer(NORMS, norm, dim=hidden_dim) for _ in range(hidden_blocks)
+        )
+        self.activation = build_layer(ACTIVATIONS, activation)
         self.dropout = dropout
         self.out_dim = hidden_dim
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
         for i, conv in enumerate(self.convs):
             x = conv(x, edge_index)
-            if i < len(self.convs) - 1:
-                x = F.dropout(F.relu(x), self.dropout, self.training)
+            if i < len(self.norms):
+                x = self.activation(self.norms[i](x))
+                x = F.dropout(x, self.dropout, self.training)
         return x
 
 
@@ -62,14 +87,19 @@ class GNNPretrainer(nn.Module):
         in_dim: int,
         hidden_dim: int = 64,
         num_layers: int = 2,
-        conv: str = "gcn",
+        conv: LayerSpec = "gcn",
         dropout: float = 0.5,
         proj_dim: int = 64,
+        activation: LayerSpec = "relu",
+        norm: LayerSpec | None = None,
+        decoder: LayerSpec = "linear",
+        projector: LayerSpec | None = None,
     ) -> None:
         super().__init__()
-        self.encoder = GNNEncoder(in_dim, hidden_dim, num_layers, conv, dropout)
-        self.decoder = nn.Linear(hidden_dim, in_dim)
-        self.projector = MLP(hidden_dim, [hidden_dim], proj_dim, activation="gelu")
+        self.encoder = GNNEncoder(in_dim, hidden_dim, num_layers, conv, dropout, activation, norm)
+        self.decoder = build_layer(MLPS, decoder, in_dim=hidden_dim, out_dim=in_dim)
+        projector = projector or {"name": "mlp", "hidden_dims": [hidden_dim], "activation": "gelu"}
+        self.projector = build_layer(MLPS, projector, in_dim=hidden_dim, out_dim=proj_dim)
         self.mask_token = nn.Parameter(torch.zeros(in_dim))
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
@@ -78,12 +108,17 @@ class GNNPretrainer(nn.Module):
 
 @MODELS.register("gnn_node_classifier")
 class GNNNodeClassifier(nn.Module):
-    """Encoder + linear head; can start from a pretrained encoder checkpoint.
+    """Encoder → activation → head; can start from a pretrained encoder checkpoint.
 
     Args:
+        conv: graph layer spec for the encoder (see :class:`GNNEncoder`).
+        activation: activation spec, used in the encoder and before the head.
+        norm: optional norm spec between encoder layers.
+        head: classification head spec (``MLPS``), ``"linear"`` or e.g.
+            ``{"name": "mlp", "hidden_dims": [64]}``.
         pretrained_checkpoint: a toolbox checkpoint (``.pt``) of a :class:`GNNPretrainer`;
             only the ``encoder.*`` weights are loaded.
-        freeze_encoder: linear-probe evaluation — train only the classification head.
+        freeze_encoder: linear-probe evaluation, which trains only the head.
     """
 
     def __init__(
@@ -92,14 +127,18 @@ class GNNNodeClassifier(nn.Module):
         num_classes: int,
         hidden_dim: int = 64,
         num_layers: int = 2,
-        conv: str = "gcn",
+        conv: LayerSpec = "gcn",
         dropout: float = 0.5,
+        activation: LayerSpec = "relu",
+        norm: LayerSpec | None = None,
+        head: LayerSpec = "linear",
         pretrained_checkpoint: str | None = None,
         freeze_encoder: bool = False,
     ) -> None:
         super().__init__()
-        self.encoder = GNNEncoder(in_dim, hidden_dim, num_layers, conv, dropout)
-        self.head = nn.Linear(hidden_dim, num_classes)
+        self.encoder = GNNEncoder(in_dim, hidden_dim, num_layers, conv, dropout, activation, norm)
+        self.activation = build_layer(ACTIVATIONS, activation)
+        self.head = build_layer(MLPS, head, in_dim=hidden_dim, out_dim=num_classes)
         if pretrained_checkpoint:
             self.load_encoder(pretrained_checkpoint)
         if freeze_encoder:
@@ -118,4 +157,4 @@ class GNNNodeClassifier(nn.Module):
         self.encoder.load_state_dict(encoder_state)
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
-        return self.head(F.relu(self.encoder(x, edge_index)))
+        return self.head(self.activation(self.encoder(x, edge_index)))

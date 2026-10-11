@@ -1,5 +1,5 @@
 site_name: toolbox
-site_description: A pattern-driven toolbox for post-training (SFT, DPO, GRPO, RL), decision models, agent tracing and GNNs.
+site_description: An extensible toolbox for machine learning research.
 site_url: https://lamng3.github.io/toolbox/
 repo_url: https://github.com/lamng3/toolbox
 repo_name: lamng3/toolbox
@@ -105,6 +105,7 @@ nav:
       - Serving and inference: guides/serving.md
       - Profiling: guides/profiling.md
       - Pretraining: guides/pretraining.md
+      - Swapping layers: guides/layers.md
       - Extending the toolbox: guides/extending.md
   - Examples: examples/
   - API reference: reference/

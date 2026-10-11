@@ -149,9 +149,30 @@ LAUNCHERS: Registry[Any] = Registry("launcher")
 MEMORIES: Registry[Any] = Registry("memory")
 EVALUATORS: Registry[Any] = Registry("evaluator")
 
+# -- layer registries: one per role, each with a fixed constructor contract ------------------
+# Models take a *spec* (name or {"name": ..., **kwargs}) per slot and build it through these,
+# so any registered layer, including your own, can replace a built-in from config.
+GRAPH_CONVS: Registry[Any] = Registry("graph_conv")  # (in_dim, out_dim, **kw) → f(x, edge_index)
+MLPS: Registry[Any] = Registry("mlp")  # (in_dim, out_dim, **kw) → f(x)
+NORMS: Registry[Any] = Registry("norm")  # (dim, **kw) → f(x)
+ACTIVATIONS: Registry[Any] = Registry("activation")  # (**kw) → f(x)
+FEEDFORWARDS: Registry[Any] = Registry("feedforward")  # (d_model, hidden_dim, **kw) → f(x)
+# (d_model, n_heads, max_seq_len, n_kv_heads, dropout, **kw) → f(x, attention_mask)
+ATTENTIONS: Registry[Any] = Registry("attention")
+
+LAYER_REGISTRIES: tuple[Registry[Any], ...] = (
+    GRAPH_CONVS,
+    MLPS,
+    NORMS,
+    ACTIVATIONS,
+    FEEDFORWARDS,
+    ATTENTIONS,
+)
+
 ALL_REGISTRIES: dict[str, Registry[Any]] = {
     r.kind: r
     for r in (
+        *LAYER_REGISTRIES,
         MODELS,
         TOKENIZERS,
         DATASETS,

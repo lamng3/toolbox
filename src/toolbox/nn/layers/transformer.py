@@ -12,8 +12,11 @@ import torch.nn.functional as F
 from torch import nn
 
 from toolbox.core.constants import NORM_EPS, ROPE_BASE
+from toolbox.core.registry import ATTENTIONS, FEEDFORWARDS, NORMS
+from toolbox.nn.layers.common import LayerSpec, build_layer
 
 
+@NORMS.register("rmsnorm")
 class RMSNorm(nn.Module):
     """Root-mean-square layer norm (Zhang & Sennrich, 2019): no mean-centering, no bias."""
 
@@ -55,6 +58,7 @@ class RotaryEmbedding(nn.Module):
         return rotated.flatten(-2)
 
 
+@ATTENTIONS.register("causal_self_attention")
 class CausalSelfAttention(nn.Module):
     """Multi-head causal self-attention with optional grouped-query attention (GQA)."""
 
@@ -113,6 +117,7 @@ class CausalSelfAttention(nn.Module):
         return self.o_proj(out)
 
 
+@FEEDFORWARDS.register("swiglu")
 class SwiGLU(nn.Module):
     """Gated feed-forward: ``W2(silu(W1 x) * W3 x)`` (Shazeer, 2020)."""
 
@@ -126,8 +131,25 @@ class SwiGLU(nn.Module):
         return self.w2(F.silu(self.w1(x)) * self.w3(x))
 
 
+@FEEDFORWARDS.register("gelu_mlp")
+class GeluMLP(nn.Module):
+    """Classic transformer feed-forward: ``W2(gelu(W1 x))`` (GPT-2 / BERT)."""
+
+    def __init__(self, d_model: int, hidden_dim: int, bias: bool = True) -> None:
+        super().__init__()
+        self.w1 = nn.Linear(d_model, hidden_dim, bias=bias)
+        self.w2 = nn.Linear(hidden_dim, d_model, bias=bias)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.w2(F.gelu(self.w1(x)))
+
+
 class TransformerBlock(nn.Module):
-    """Pre-norm residual block: ``x + attn(norm(x))`` then ``x + ffn(norm(x))``."""
+    """Pre-norm residual block: ``x + attn(norm(x))`` then ``x + ffn(norm(x))``.
+
+    ``attention``, ``ffn`` and ``norm`` are layer specs (registered names or
+    ``{"name": ..., **kwargs}``), so any registered implementation can replace the defaults.
+    """
 
     def __init__(
         self,
@@ -137,12 +159,23 @@ class TransformerBlock(nn.Module):
         ffn_hidden_dim: int,
         n_kv_heads: int | None = None,
         dropout: float = 0.0,
+        attention: LayerSpec = "causal_self_attention",
+        ffn: LayerSpec = "swiglu",
+        norm: LayerSpec = "rmsnorm",
     ) -> None:
         super().__init__()
-        self.attn_norm = RMSNorm(d_model)
-        self.attn = CausalSelfAttention(d_model, n_heads, max_seq_len, n_kv_heads, dropout)
-        self.ffn_norm = RMSNorm(d_model)
-        self.ffn = SwiGLU(d_model, ffn_hidden_dim)
+        self.attn_norm = build_layer(NORMS, norm, dim=d_model)
+        self.attn = build_layer(
+            ATTENTIONS,
+            attention,
+            d_model=d_model,
+            n_heads=n_heads,
+            max_seq_len=max_seq_len,
+            n_kv_heads=n_kv_heads,
+            dropout=dropout,
+        )
+        self.ffn_norm = build_layer(NORMS, norm, dim=d_model)
+        self.ffn = build_layer(FEEDFORWARDS, ffn, d_model=d_model, hidden_dim=ffn_hidden_dim)
 
     def forward(self, x: torch.Tensor, attention_mask: torch.Tensor | None = None) -> torch.Tensor:
         x = x + self.attn(self.attn_norm(x), attention_mask)

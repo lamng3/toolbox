@@ -12,7 +12,16 @@ data:
   name: gmv_molecules        # registered by examples/gmv/data.py
   num_molecules: 400
   public_fraction: 0.7
-model: {hidden_dim: 32, num_layers: 2, conv: gcn, dropout: 0.0}
+# The GNN is toolbox's `gnn_node_classifier` (src/toolbox/nn/models/gnn.py). Every layer is a
+# swappable spec: built-ins or anything you register in the matching toolbox registry.
+model:
+  hidden_dim: 32
+  num_layers: 2
+  conv: gcn           # graph_conv registry: gcn | sage | gat | your own
+  activation: relu    # activation registry
+  norm: null          # norm registry, e.g. layernorm
+  head: linear        # mlp registry, e.g. {name: mlp, hidden_dims: [32]}
+  dropout: 0.0
 trainer: {max_steps: 300, batch_size: 1, eval_every: 0, log_every: 100, device: cpu}
 optimizer: {name: adam, lr: 0.01, weight_decay: 5.0e-4}
 scheduler: {name: constant}

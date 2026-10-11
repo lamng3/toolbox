@@ -13,18 +13,20 @@ from toolbox.core.types import Batch, LossOutput
 from toolbox.objectives.base import SupervisedObjective
 
 TRAIN_MASK = "train_mask"
+VAL_MASK = "val_mask"
 
 
 @OBJECTIVES.register("node_classification")
 class NodeClassificationLoss(SupervisedObjective):
-    """Cross-entropy over nodes selected by ``mask_key`` (``train_mask`` by default)."""
+    """Cross-entropy over the nodes of a split: ``mask_key`` while training and
+    ``eval_mask_key`` in eval mode, so ``eval/accuracy`` is held-out accuracy."""
 
-    def __init__(self, mask_key: str = TRAIN_MASK) -> None:
-        self.mask_key = mask_key
+    def __init__(self, mask_key: str = TRAIN_MASK, eval_mask_key: str = VAL_MASK) -> None:
+        self.mask_key, self.eval_mask_key = mask_key, eval_mask_key
 
     def __call__(self, model: nn.Module, batch: Batch) -> LossOutput:
         logits = model(batch["x"], batch["edge_index"])
-        mask = batch[self.mask_key]
+        mask = batch[self.mask_key if model.training else self.eval_mask_key]
         loss = F.cross_entropy(logits[mask], batch["y"][mask])
         accuracy = (logits[mask].argmax(-1) == batch["y"][mask]).float().mean()
         return LossOutput(loss, {"accuracy": float(accuracy)})

@@ -1,4 +1,8 @@
-"""Actor-critic networks for environment-based RL (PPO)."""
+"""Actor-critic networks for environment-based RL (PPO).
+
+The ``actor`` and ``critic`` networks are ``MLPS`` specs, so a custom network registered with
+``@MLPS.register(...)`` can replace either one.
+"""
 
 from __future__ import annotations
 
@@ -6,8 +10,8 @@ import torch
 from torch import nn
 from torch.distributions import Categorical
 
-from toolbox.core.registry import MODELS
-from toolbox.nn.layers import MLP
+from toolbox.core.registry import MLPS, MODELS
+from toolbox.nn.layers import LayerSpec, build_layer
 
 
 @MODELS.register("actor_critic")
@@ -19,11 +23,14 @@ class ActorCritic(nn.Module):
         obs_dim: int,
         num_actions: int,
         hidden_dims: tuple[int, ...] = (64, 64),
-        activation: str = "tanh",
+        activation: LayerSpec = "tanh",
+        actor: LayerSpec | None = None,
+        critic: LayerSpec | None = None,
     ) -> None:
         super().__init__()
-        self.actor = MLP(obs_dim, hidden_dims, num_actions, activation=activation)
-        self.critic = MLP(obs_dim, hidden_dims, 1, activation=activation)
+        default = {"name": "mlp", "hidden_dims": list(hidden_dims), "activation": activation}
+        self.actor = build_layer(MLPS, actor or default, in_dim=obs_dim, out_dim=num_actions)
+        self.critic = build_layer(MLPS, critic or default, in_dim=obs_dim, out_dim=1)
 
     def distribution(self, obs: torch.Tensor) -> Categorical:
         return Categorical(logits=self.actor(obs))

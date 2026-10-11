@@ -1,4 +1,4 @@
-"""Message-passing graph layers in pure PyTorch.
+"""Message-passing graph layers in pure PyTorch, registered in ``GRAPH_CONVS``.
 
 Graphs use the PyG convention: ``edge_index`` is a ``(2, E)`` long tensor of ``(source, target)``
 pairs, node features ``x`` are ``(N, F)``. Aggregation uses ``index_add_`` so no
@@ -13,6 +13,7 @@ import torch.nn.functional as F
 from torch import nn
 
 from toolbox.core.constants import EPS
+from toolbox.core.registry import GRAPH_CONVS
 
 
 def add_self_loops(edge_index: torch.Tensor, num_nodes: int) -> torch.Tensor:
@@ -42,6 +43,7 @@ def scatter_softmax(scores: torch.Tensor, index: torch.Tensor, num_nodes: int) -
     return exp / (denom[index] + EPS)
 
 
+@GRAPH_CONVS.register("gcn")
 class GCNConv(nn.Module):
     """Graph convolution (Kipf & Welling, 2017) with symmetric normalisation."""
 
@@ -59,6 +61,7 @@ class GCNConv(nn.Module):
         return scatter_sum(h[src] * norm[:, None], dst, num_nodes)
 
 
+@GRAPH_CONVS.register("sage")
 class SAGEConv(nn.Module):
     """GraphSAGE with mean aggregation (Hamilton et al., 2017)."""
 
@@ -75,6 +78,7 @@ class SAGEConv(nn.Module):
         return self.self_linear(x) + self.neigh_linear(mean)
 
 
+@GRAPH_CONVS.register("gat")
 class GATConv(nn.Module):
     """Graph attention (Veličković et al., 2018), multi-head with concatenated outputs."""
 
@@ -99,7 +103,3 @@ class GATConv(nn.Module):
         alpha = scatter_softmax(F.leaky_relu(scores, self.negative_slope), dst, num_nodes)
         messages = (h[src] * alpha[..., None]).flatten(1)
         return scatter_sum(messages, dst, num_nodes)
-
-
-GRAPH_CONVS: dict[str, type[nn.Module]] = {"gcn": GCNConv, "sage": SAGEConv, "gat": GATConv}
-"""Lookup table used by :class:`toolbox.nn.models.gnn.GNNEncoder` instead of if/elif chains."""

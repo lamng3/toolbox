@@ -38,6 +38,7 @@ plugin (see below); then `toolbox train experiment=grpo_tiny reward=contains_key
 | Registry | Interface | Examples |
 | --- | --- | --- |
 | `MODELS` | `nn.Module` (`CausalLM` for LMs) | `tiny_gpt`, `hf_causal_lm`, `gnn_encoder` |
+| `GRAPH_CONVS`, `MLPS`, `NORMS`, `ACTIVATIONS`, `FEEDFORWARDS`, `ATTENTIONS` | layer roles, see [Swapping layers](layers.md) | `gcn`, `mlp`, `rmsnorm`, `gelu`, `swiglu`, `causal_self_attention` |
 | `TOKENIZERS` | `Tokenizer` | `byte`, `hf` |
 | `DATASETS` | factory → `DataBundle` | `sft`, `preference`, `prompts`, `decisions`, `traces` |
 | `OBJECTIVES` | objective families | `sft`, `dpo`, `grpo`, `decision_ce` |

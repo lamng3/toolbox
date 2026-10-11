@@ -1,6 +1,12 @@
+# Every slot is a swappable layer spec: a registered name or {name: ..., **kwargs}.
+# See the component catalog (graph_conv, activation, norm, mlp) or `toolbox list graph_conv`.
 name: gnn_node_classifier
 hidden_dim: 64
 num_layers: 2
-conv: gcn
+conv: gcn             # gcn | sage | gat | {name: gat, heads: 8} | your registered layer
+activation: relu
+norm: null            # e.g. layernorm, batchnorm
+head: linear          # e.g. {name: mlp, hidden_dims: [64], dropout: 0.2}
 pretrained_checkpoint: null
 freeze_encoder: false
+init_from: null  # checkpoint of a previous stage

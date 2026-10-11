@@ -1,7 +1,11 @@
 # ~0.3M params: runs on CPU in seconds. For tests and teaching, not for real results.
+# Block internals are swappable layer specs (attention, feedforward, norm registries).
 name: tiny_gpt
 d_model: 64
 n_layers: 2
 n_heads: 4
 max_seq_len: 256
+attention: causal_self_attention
+ffn: swiglu           # swiglu | gelu_mlp | your registered feed-forward
+norm: rmsnorm         # rmsnorm | layernorm | your registered norm
 init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

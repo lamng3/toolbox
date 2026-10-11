@@ -54,6 +54,47 @@ flowchart LR
     MIN --> SEL
 ```
 
+## The model
+
+GMV serves the outputs of a GNN, and that GNN comes from toolbox; the example doesn't define
+one. [`configs/experiment/gmv_molecules_gcn.yaml`](configs/experiment/gmv_molecules_gcn.yaml)
+selects `model: gnn_node_classifier`, which `ExperimentBuilder` builds from the toolbox model
+registry:
+
+```mermaid
+flowchart LR
+    CFG["config<br/>model: gnn_node_classifier"] --> CLF["GNNNodeClassifier<br/>toolbox.nn.models.gnn"]
+    CLF --> ENC["GNNEncoder<br/>L × conv → norm → activation"]
+    CLF --> HEAD["head<br/>mlp registry"]
+    ENC --> CONV["conv<br/>graph_conv registry:<br/>gcn · sage · gat · yours"]
+```
+
+Each slot is a layer spec, so the architecture changes from the command line:
+
+```bash
+python -m examples.gmv.run model.conv=sage                         # GraphSAGE instead of GCN
+python -m examples.gmv.run 'model.conv={name:gat,heads:8}'         # GAT with 8 heads
+python -m examples.gmv.run 'model.head={name:mlp,hidden_dims:[32]}' model.norm=layernorm
+```
+
+A layer you write yourself plugs in the same way. Register it in the matching toolbox registry
+and select it by name:
+
+```python
+from torch import nn
+from toolbox.core.registry import GRAPH_CONVS
+
+
+@GRAPH_CONVS.register("my_conv")
+class MyConv(nn.Module):
+    def __init__(self, in_dim: int, out_dim: int): ...
+    def forward(self, x, edge_index): ...
+```
+
+GMV's matching uses `L` refinement rounds for `sage` and `gat`, and `L + 1` for `gcn` and for
+any other layer, including yours. That's the safe default, because extra rounds only make
+matching stricter.
+
 ## How the paper maps onto toolbox
 
 | Paper | Here | Toolbox piece used |

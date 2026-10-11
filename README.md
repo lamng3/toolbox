@@ -5,10 +5,11 @@
 ![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12-blue)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-A Python library and template for getting from an idea to results quickly in **post-training
-and RL**: SFT, DPO, GRPO and friends for language models. It also covers decision models, agent
-tracing, GNNs, and SGLang / vLLM serving. The same command runs on a laptop, a GPU VM, or a
-SLURM cluster.
+An extensible toolbox for machine learning research. Every model, loss, layer and training
+loop is a swappable component, so testing an idea is a config change. Its first focus is
+**post-training and RL** (SFT, DPO, GRPO and friends for language models). It also covers
+decision models, agent tracing, GNNs, and SGLang / vLLM serving, and the same command runs on a
+laptop, a GPU VM, or a SLURM cluster.
 
 **[Documentation](https://lamng3.github.io/toolbox/)** ·
 **[Quickstart](https://lamng3.github.io/toolbox/getting-started/quickstart/)** ·
@@ -71,6 +72,7 @@ trainer.fit()
 | **Online RL** | `grpo`, `ppo_clip`, `reinforce` × advantages `group_relative`, Dr. GRPO, `rloo` · k3 KL · asymmetric clipping |
 | **Rewards** | `exact_match`, `format`, `length_penalty`, composite `weighted_sum`, learned `reward_model`, `llm_judge` |
 | **Models** | any Hugging Face causal LM (+ LoRA) · `tiny_gpt` for CPU tests · GCN / GraphSAGE / GAT · actor-critic |
+| **Layers** | every block swappable by name: graph convs, MLP heads, norms, activations, attention, feed-forward ([guide](https://lamng3.github.io/toolbox/guides/layers/)) |
 | **Decision models** | option probabilities from next-token logits, debiased over rotations · CE / distillation / policy-gradient training |
 | **Agent tracing** | atomic `ActionRecord`s with nested spans and delayed feedback · traces → SFT / decision / DPO datasets |
 | **Memory** | episodic retrieval (in context) · expert iteration from traced successes (in weights) |
@@ -170,7 +172,9 @@ class MyLoss(PreferenceObjective):
     def __call__(self, policy_chosen, policy_rejected, ref_chosen, ref_rejected): ...
 ```
 
-Select it with `objective=my_preference_loss`. To share it across projects, publish it under
+Select it with `objective=my_preference_loss`. Layers work the same way: register a module
+under its role (for example `@MLPS.register("my_head")`) and use `model.head=my_head`. See
+[Swapping layers](https://lamng3.github.io/toolbox/guides/layers/). To share it across projects, publish it under
 the `toolbox.plugins` entry point; see
 [Extending](https://lamng3.github.io/toolbox/guides/extending/). Paper reproductions go in
 [`examples/`](examples/README.md).

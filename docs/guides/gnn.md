@@ -15,10 +15,10 @@ toolbox train experiment=gnn_finetune model.freeze_encoder=true           # line
 | Component | Name | Notes |
 | --- | --- | --- |
 | Layers | `GCNConv`, `SAGEConv`, `GATConv` | pure PyTorch (`index_add_`), so PyG is not needed |
-| Encoder | `gnn_encoder` | `conv=gcn|sage|gat`, `num_layers`, `hidden_dim` |
+| Encoder | `gnn_encoder` | `conv`, `activation`, `norm` are [swappable layers](layers.md); `num_layers`, `hidden_dim` |
 | Pretraining model | `gnn_pretrainer` | encoder + feature decoder + projection head + mask token |
 | Classifier | `gnn_node_classifier` | encoder + linear head; `pretrained_checkpoint`, `freeze_encoder` |
-| Objectives | `masked_feature` (GraphMAE), `graph_contrastive` (GRACE), `node_classification` | |
+| Objectives | `masked_feature` (GraphMAE), `graph_contrastive` (GRACE), `node_classification` (trains on `train_mask`, reports `eval/accuracy` on `val_mask`) | |
 | Data | `synthetic_graph` (stochastic block model, offline), `planetoid` (Cora/CiteSeer/PubMed via PyG) | |
 
 Graphs are plain dicts (`x`, `edge_index`, `y`, `*_mask`) in the PyG `edge_index` convention.
