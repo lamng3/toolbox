@@ -12,15 +12,19 @@ data:
   name: gmv_molecules        # registered by examples/gmv/data.py
   num_molecules: 400
   public_fraction: 0.7
-# The GNN is toolbox's `gnn_node_classifier` (src/toolbox/nn/models/gnn.py). Every layer is a
-# swappable spec: built-ins or anything you register in the matching toolbox registry.
+# The GNN is toolbox's `gnn_node_classifier` (src/toolbox/nn/models/gnn.py). With head: null
+# it is the classic Kipf & Welling GCN, conv(in→32) → relu → conv(32→classes), the same
+# architecture as upstream GMV's `GCN`. Every layer is a swappable spec:
+#   conv: gcn | sage | gat | pyg_gcn | {name: pyg, layer: GATv2Conv, heads: 4} | your own
+#   head: null (logits from the last conv) | linear | {name: mlp, hidden_dims: [32]}
+# or replace the whole model: model={name: pyg_model, model: GCN, hidden_channels: 32}
 model:
   hidden_dim: 32
   num_layers: 2
-  conv: gcn           # graph_conv registry: gcn | sage | gat | your own
-  activation: relu    # activation registry
-  norm: null          # norm registry, e.g. layernorm
-  head: linear        # mlp registry, e.g. {name: mlp, hidden_dims: [32]}
+  conv: gcn
+  activation: relu
+  norm: null
+  head: null
   dropout: 0.0
 trainer: {max_steps: 300, batch_size: 1, eval_every: 0, log_every: 100, device: cpu}
 optimizer: {name: adam, lr: 0.01, weight_decay: 5.0e-4}

@@ -28,7 +28,7 @@ dependencies = [
 
 [project.optional-dependencies]
 llm = ["transformers>=4.44", "datasets>=2.20", "peft>=0.12", "accelerate>=0.33"]
-gnn = ["torch-geometric>=2.5"]
+gnn = ["torch-geometric>=2.6"]
 serve-sglang = ["sglang[all]>=0.4"]
 serve-vllm = ["vllm>=0.6"]
 tracking = ["wandb>=0.17", "tensorboard>=2.16"]

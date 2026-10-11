@@ -31,3 +31,16 @@ toolbox train experiment=gnn_pretrain data=planetoid data.dataset=CiteSeer
 
 `in_dim` and `num_classes` come from the dataset and are injected into the model, so you never
 set them by hand.
+
+## Architectures
+
+| Config | Model |
+| --- | --- |
+| `head: null` | classic Kipf & Welling layout, `conv → relu → conv` with logits from the last conv |
+| `head: linear` (default) | `L` convs → relu → linear head (use this with pretrained encoders) |
+| `conv: pyg_gcn` (or any `pyg_*`) | PyTorch Geometric's layer in the same model |
+| `model: {name: pyg_model, model: GraphSAGE}` | PyTorch Geometric's whole model |
+
+Toolbox's own `gcn`, `sage` and `gat` follow the standard definitions (GCN adds the bias after
+aggregation and uses Glorot initialisation) and are tested for numerical parity with PyG. See
+[Swapping layers](layers.md) for every option.

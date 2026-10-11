@@ -58,16 +58,25 @@ flowchart LR
 
 GMV serves the outputs of a GNN, and that GNN comes from toolbox; the example doesn't define
 one. [`configs/experiment/gmv_molecules_gcn.yaml`](configs/experiment/gmv_molecules_gcn.yaml)
-selects `model: gnn_node_classifier`, which `ExperimentBuilder` builds from the toolbox model
-registry:
+selects `model: gnn_node_classifier` with `head: null`, which `ExperimentBuilder` builds from
+the toolbox model registry. That is the classic Kipf & Welling GCN,
+`conv(in→32) → relu → conv(32→classes)`, the same architecture as upstream GMV's `GCN` class:
 
 ```mermaid
 flowchart LR
     CFG["config<br/>model: gnn_node_classifier"] --> CLF["GNNNodeClassifier<br/>toolbox.nn.models.gnn"]
     CLF --> ENC["GNNEncoder<br/>L × conv → norm → activation"]
-    CLF --> HEAD["head<br/>mlp registry"]
-    ENC --> CONV["conv<br/>graph_conv registry:<br/>gcn · sage · gat · yours"]
+    CLF -. "head: null = logits from last conv" .-> HEAD["head<br/>mlp registry"]
+    ENC --> CONV["conv<br/>graph_conv registry:<br/>gcn · sage · gat · pyg_* · yours"]
 ```
+
+**Same as upstream?** Upstream uses PyTorch Geometric's `GCNConv`. Toolbox's `gcn` is a
+readable pure-PyTorch implementation, and `tests/unit/test_graph_parity.py` checks that it gives
+the same outputs as PyG's for the same weights. The full GMV experiment also gives identical
+results with `model.conv=pyg_gcn` (PyG's layer) and the default `gcn`: same accuracy, same view
+hits, same errors. You can also use PyG directly, either as a layer
+(`model.conv=pyg_gcn`) or as the whole model
+(`model={name:pyg_model,model:GCN,hidden_channels:32}`).
 
 Each slot is a layer spec, so the architecture changes from the command line:
 
@@ -116,10 +125,10 @@ recursively for L hops. For a deterministic L-layer GNN, they then get the same 
 **counting** colour refinement, where neighbour multisets play the role of the paper's scaling
 factors `S_e`. `tests/test_gmv.py` checks the condition on real model outputs:
 
-| Layer | Rounds needed | Max output gap within a colour class |
+| Layer (toolbox or PyG) | Rounds needed | Max output gap within a colour class |
 | --- | --- | --- |
-| GraphSAGE (mean), GAT | L | ≤ 1.5e-8 |
-| GCN | L + 1 | 1.5e-8 (vs **4.7e-3** with only L rounds) |
+| GraphSAGE (mean), GAT, GIN | L | ≤ 1.5e-8 |
+| GCN | L + 1 | 0 (vs **2.7e-2** with only L rounds) |
 
 GCN normalises each message by the *neighbour's* degree, so it also depends on the degrees of
 nodes L hops away. That needs one more round. The paper handles this with stored degree
@@ -134,15 +143,17 @@ with the toolbox trainer. *Fidelity* means the same prediction as full-graph inf
 | Model | Answers allowed | GVSel: from views | GVSel: fidelity | Random selection: from views |
 | --- | --- | --- | --- | --- |
 | GCN | exact (3 rounds) | 11.0% | 100% | 0.3% |
-| GCN | ≥ 2 rounds matched | 44.8% | 98.0% | 5.8% |
-| GCN | ≥ 1 round matched | 90.2% | 87.3% | 57.6% |
+| GCN | ≥ 2 rounds matched | 44.8% | 99.3% | 5.8% |
+| GCN | ≥ 1 round matched | 90.2% | 92.3% | 57.5% |
 | GraphSAGE | exact (2 rounds) | 52.0% | 100% | 6.2% |
-| GraphSAGE | ≥ 1 round matched | 95.5% | 98.5% | 54.9% |
+| GraphSAGE | ≥ 1 round matched | 95.5% | 99.3% | 55.0% |
 | GAT | exact (2 rounds) | 52.0% | 100% | 6.2% |
+
+GCN results are identical with toolbox's `gcn` and PyG's `pyg_gcn`.
 
 What these numbers say:
 
-* **Exact answers are exact.** Max logit error on view hits is ≤ 1.5e-5, and fidelity is 100%.
+* **Exact answers are exact.** Max logit error on view hits is ≤ 6e-6, and fidelity is 100%.
 * **GVSel matters.** With the same views and budget, the coverage-driven selection serves 8–44×
   more queries exactly than random selection.
 * **The coverage–fidelity trade-off is explicit.** Lowering the accepted bisimulation depth

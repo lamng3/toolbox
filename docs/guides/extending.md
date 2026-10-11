@@ -79,6 +79,12 @@ without writing them.
 Give the class or function a docstring: its first paragraph becomes the component's entry in
 the [component catalog](../concepts/components.md), and CI fails without one.
 
+## Using a model you are developing
+
+You don't have to register anything to train your own model:
+`model: {name: torch_module, target: my_pkg.models:MyNet}`. See
+[Swapping layers](layers.md#your-own-model).
+
 ## Reproducing a paper
 
 Put it in `examples/<name>/`, self-contained, with its own `README.md` (method, citation,

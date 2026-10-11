@@ -72,7 +72,7 @@ trainer.fit()
 | **Online RL** | `grpo`, `ppo_clip`, `reinforce` × advantages `group_relative`, Dr. GRPO, `rloo` · k3 KL · asymmetric clipping |
 | **Rewards** | `exact_match`, `format`, `length_penalty`, composite `weighted_sum`, learned `reward_model`, `llm_judge` |
 | **Models** | any Hugging Face causal LM (+ LoRA) · `tiny_gpt` for CPU tests · GCN / GraphSAGE / GAT · actor-critic |
-| **Layers** | every block swappable by name: graph convs, MLP heads, norms, activations, attention, feed-forward ([guide](https://lamng3.github.io/toolbox/guides/layers/)) |
+| **Layers & backends** | every block swappable by name ([guide](https://lamng3.github.io/toolbox/guides/layers/)) · PyTorch Geometric and Hugging Face as backends · any `nn.Module` via `torch_module` |
 | **Decision models** | option probabilities from next-token logits, debiased over rotations · CE / distillation / policy-gradient training |
 | **Agent tracing** | atomic `ActionRecord`s with nested spans and delayed feedback · traces → SFT / decision / DPO datasets |
 | **Memory** | episodic retrieval (in context) · expert iteration from traced successes (in weights) |

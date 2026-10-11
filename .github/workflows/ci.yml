@@ -22,7 +22,7 @@ jobs:
         run: |
           uv venv --python ${{ matrix.python-version }}
           uv pip install torch --index-url https://download.pytorch.org/whl/cpu
-          uv pip install -e ".[dev]"
+          uv pip install -e ".[dev,gnn]"
       - name: Lint
         run: |
           .venv/bin/ruff check src tests scripts recipes examples

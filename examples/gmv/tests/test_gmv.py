@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 import torch
-from examples.gmv.bisim import refine, rounds_for
+from examples.gmv.bisim import model_conv, refine, rounds_for
 from examples.gmv.data import molecule_graph
 from examples.gmv.graph import k_hop_subgraph
 from examples.gmv.selection import VIEW_SELECTORS, coverage
@@ -22,11 +22,14 @@ def graph() -> dict[str, torch.Tensor]:
     return molecule_graph(num_molecules=120, seed=1)
 
 
-def make_model(conv: str) -> GNNNodeClassifier:
+def make_model(conv: str, head: str | None = "linear") -> GNNNodeClassifier:
     torch.manual_seed(0)
     return GNNNodeClassifier(
-        5, 4, hidden_dim=16, num_layers=NUM_LAYERS, conv=conv, dropout=0.0
+        5, 4, hidden_dim=16, num_layers=NUM_LAYERS, conv=conv, dropout=0.0, head=head
     ).eval()
+
+
+PYG_CONVS = ["pyg_gcn", "pyg_sage", "pyg_gat", "pyg_gin"]
 
 
 def max_within_class_gap(outputs: torch.Tensor, colours: list[int]) -> float:
@@ -36,10 +39,14 @@ def max_within_class_gap(outputs: torch.Tensor, colours: list[int]) -> float:
     return max(float((outputs[vs] - outputs[vs[0]]).abs().max()) for vs in groups.values())
 
 
-@pytest.mark.parametrize("conv", ["gcn", "sage", "gat"])
-def test_bisimilar_nodes_have_identical_outputs(graph: dict, conv: str) -> None:
-    """Corollary 4: equal colours after ``rounds_for(L, conv)`` rounds ⇒ equal model outputs."""
-    model = make_model(conv)
+@pytest.mark.parametrize("head", ["linear", None])
+@pytest.mark.parametrize("conv", ["gcn", "sage", "gat", *PYG_CONVS])
+def test_bisimilar_nodes_have_identical_outputs(graph: dict, conv: str, head: str | None) -> None:
+    """Corollary 4: equal colours after ``rounds_for(L, conv)`` rounds ⇒ equal model outputs,
+    for toolbox's layers and PyG's, with and without a separate head."""
+    if conv.startswith("pyg"):
+        pytest.importorskip("torch_geometric")
+    model = make_model(conv, head)
     with torch.no_grad():
         out = model(graph["x"], graph["edge_index"])
     rounds = rounds_for(NUM_LAYERS, conv)
@@ -137,3 +144,5 @@ def test_matching_depth_for_layer_specs() -> None:
     assert rounds_for(2, {"name": "gat", "heads": 8}) == 2
     assert rounds_for(2, "gcn") == 3
     assert rounds_for(2, {"name": "my_custom_conv"}) == 3
+    assert rounds_for(2, model_conv({"name": "pyg_model", "model": "GraphSAGE"})) == 2
+    assert rounds_for(2, model_conv({"name": "torch_module", "target": "x:Y"})) == 3

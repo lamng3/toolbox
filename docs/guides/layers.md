@@ -5,6 +5,22 @@ a convolution, MLP, norm, activation, attention or feed-forward block directly. 
 registry for that *role* by name. So you can test a new architecture by changing a config value,
 and a layer you write yourself plugs in exactly like a built-in.
 
+## Standard libraries first
+
+Toolbox doesn't try to replace established libraries. They plug in as backends:
+
+| You want | Use |
+| --- | --- |
+| a standard GNN layer | any PyTorch Geometric layer: `conv: pyg_gcn`, `pyg_sage`, `pyg_gat`, `pyg_gatv2`, `pyg_gin`, `pyg_transformer`, or `{name: pyg, layer: <any torch_geometric.nn class>, ...}` |
+| a standard GNN model | `model: {name: pyg_model, model: GCN \| GraphSAGE \| GAT \| GIN \| PNA \| EdgeCNN, ...}` |
+| a pretrained language model | `model: {name: hf_causal_lm, model_name_or_path: ...}` (Hugging Face) |
+| **your own model**, as you develop it | `model: {name: torch_module, target: my_pkg.models:MyNet, ...}`, with no registration needed |
+
+The pure-PyTorch built-ins (`gcn`, `sage`, `gat`, `tiny_gpt` blocks ...) stay in toolbox as
+**readable references** for teaching and for hacking on internals. Each graph layer is checked
+against PyG for numerical parity (`tests/unit/test_graph_parity.py`), so you can switch between
+`gcn` and `pyg_gcn` and get the same results.
+
 ## Layer roles
 
 Each role has a fixed constructor contract. Anything registered under a role must accept those
@@ -12,7 +28,7 @@ arguments (plus any extra keyword arguments of its own) and implement the forwar
 
 | Role (registry) | Constructor contract | Forward | Built-ins |
 | --- | --- | --- | --- |
-| `graph_conv` (`GRAPH_CONVS`) | `(in_dim, out_dim, **kw)` | `(x, edge_index)` | `gcn`, `sage`, `gat` |
+| `graph_conv` (`GRAPH_CONVS`) | `(in_dim, out_dim, **kw)` | `(x, edge_index)` | `gcn`, `sage`, `gat`, `pyg`, `pyg_*` |
 | `mlp` (`MLPS`) | `(in_dim, out_dim, **kw)` | `(x)` | `linear`, `mlp` |
 | `norm` (`NORMS`) | `(dim, **kw)` | `(x)` | `rmsnorm`, `layernorm`, `batchnorm`, `identity` |
 | `activation` (`ACTIVATIONS`) | `(**kw)` | `(x)` | `relu`, `gelu`, `silu`, `tanh`, `identity` |
@@ -30,7 +46,7 @@ options. The model fills in the contract arguments (dimensions) itself. Optional
 
 | Model | Slots |
 | --- | --- |
-| `gnn_node_classifier` | `conv`, `activation`, `norm`, `head` |
+| `gnn_node_classifier` | `conv`, `activation`, `norm`, `head` (`null` = classic layout, logits from the last conv) |
 | `gnn_pretrainer` | `conv`, `activation`, `norm`, `decoder`, `projector` |
 | `gnn_encoder` | `conv`, `activation`, `norm` |
 | `tiny_gpt` | `attention`, `ffn`, `norm` (in every block and the final norm) |
@@ -54,6 +70,21 @@ model:
   ffn: {name: gelu_mlp, bias: false}
   norm: layernorm
 ```
+
+## Your own model
+
+Point a config at the class. Data-derived sizes (`in_dim`, `num_classes`, `vocab_size`, ...)
+are passed only if its constructor names them:
+
+```yaml
+model:
+  name: torch_module
+  target: my_lab.models:SpectralGNN   # "module.path:ClassName"
+  hidden: 128
+```
+
+It then trains with any toolbox objective, trainer, callback and launcher. When you want a short
+name, register it instead: `@MODELS.register("spectral_gnn")`.
 
 ## Your own layer
 

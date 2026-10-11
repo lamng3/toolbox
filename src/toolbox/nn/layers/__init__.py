@@ -2,7 +2,7 @@
 
 | Role (registry) | Built-ins |
 | --- | --- |
-| ``graph_conv`` | ``gcn``, ``sage``, ``gat`` |
+| ``graph_conv`` | ``gcn``, ``sage``, ``gat`` (pure PyTorch) · ``pyg``, ``pyg_*`` (PyG) |
 | ``mlp`` | ``linear``, ``mlp`` |
 | ``norm`` | ``rmsnorm``, ``layernorm``, ``batchnorm``, ``identity`` |
 | ``activation`` | ``relu``, ``gelu``, ``silu``, ``tanh``, ``identity`` |
@@ -12,6 +12,7 @@
 
 from toolbox.nn.layers.common import MLP, LayerSpec, ScalarHead, build_layer
 from toolbox.nn.layers.graph import GATConv, GCNConv, SAGEConv
+from toolbox.nn.layers.pyg import PyGConv
 from toolbox.nn.layers.transformer import (
     CausalSelfAttention,
     GeluMLP,
@@ -28,6 +29,7 @@ __all__ = [
     "GCNConv",
     "GeluMLP",
     "LayerSpec",
+    "PyGConv",
     "RMSNorm",
     "RotaryEmbedding",
     "SAGEConv",

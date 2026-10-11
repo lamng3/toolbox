@@ -82,7 +82,7 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 | Advantage estimators | `group_relative` (GRPO), `dr_grpo` (unscaled), `rloo`, `batch_normalized`, GAE |
 | Rewards | `exact_match`, `format`, `length_penalty`, `weighted_sum` (composite), `reward_model`, `llm_judge` |
 | Models | any Hugging Face causal LM (+ LoRA via PEFT), `tiny_gpt` (Llama-style, from scratch), reward model, GNNs (GCN / GraphSAGE / GAT), actor-critic |
-| Layers | every block is [swappable by name](guides/layers.md): graph convs, MLP heads, norms, activations, attention, feed-forward, built-in or your own |
+| Layers & backends | every block is [swappable by name](guides/layers.md): graph convs, MLP heads, norms, activations, attention, feed-forward; PyTorch Geometric and Hugging Face as backends; any `nn.Module` via `torch_module` |
 | Decision models | rotation-debiased readout, `decision_ce`, `decision_distill`, `decision_pg`, flip-rate evaluation |
 | Agents | `Tracer` spans, `@traced`, delayed feedback, trace → SFT / decision / preference datasets, episodic memory |
 | GNN | self-supervised pretraining (`masked_feature` GraphMAE, `graph_contrastive` GRACE) → node classification |

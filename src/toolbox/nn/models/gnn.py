@@ -39,6 +39,7 @@ class GNNEncoder(nn.Module):
             or any layer you registered in ``GRAPH_CONVS``.
         activation: activation spec (``ACTIVATIONS``).
         norm: optional norm spec between layers (``NORMS``), e.g. ``"layernorm"``.
+        out_dim: width of the last layer (defaults to ``hidden_dim``).
     """
 
     def __init__(
@@ -50,9 +51,11 @@ class GNNEncoder(nn.Module):
         dropout: float = 0.5,
         activation: LayerSpec = "relu",
         norm: LayerSpec | None = None,
+        out_dim: int | None = None,
     ) -> None:
         super().__init__()
-        dims = [in_dim] + [hidden_dim] * num_layers
+        out_dim = out_dim or hidden_dim
+        dims = [in_dim] + [hidden_dim] * (num_layers - 1) + [out_dim]
         self.convs = nn.ModuleList(
             build_layer(GRAPH_CONVS, conv, in_dim=a, out_dim=b) for a, b in itertools.pairwise(dims)
         )
@@ -62,7 +65,7 @@ class GNNEncoder(nn.Module):
         )
         self.activation = build_layer(ACTIVATIONS, activation)
         self.dropout = dropout
-        self.out_dim = hidden_dim
+        self.out_dim = out_dim
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
         for i, conv in enumerate(self.convs):
@@ -108,14 +111,19 @@ class GNNPretrainer(nn.Module):
 
 @MODELS.register("gnn_node_classifier")
 class GNNNodeClassifier(nn.Module):
-    """Encoder → activation → head; can start from a pretrained encoder checkpoint.
+    """Encoder → activation → head, or with ``head=None`` the classic Kipf & Welling GNN.
+
+    * ``head="linear"`` (default) / any ``MLPS`` spec: ``L`` convs to ``hidden_dim``, then a
+      separate head. This is the layout to use with pretrained encoders.
+    * ``head=None``: the last conv outputs the class logits directly, e.g. the standard 2-layer
+      GCN ``conv → relu → conv`` (Kipf & Welling, 2017; PyG's example ``GCN``).
 
     Args:
         conv: graph layer spec for the encoder (see :class:`GNNEncoder`).
         activation: activation spec, used in the encoder and before the head.
         norm: optional norm spec between encoder layers.
         head: classification head spec (``MLPS``), ``"linear"`` or e.g.
-            ``{"name": "mlp", "hidden_dims": [64]}``.
+            ``{"name": "mlp", "hidden_dims": [64]}``; ``None`` for the classic layout.
         pretrained_checkpoint: a toolbox checkpoint (``.pt``) of a :class:`GNNPretrainer`;
             only the ``encoder.*`` weights are loaded.
         freeze_encoder: linear-probe evaluation, which trains only the head.
@@ -131,13 +139,23 @@ class GNNNodeClassifier(nn.Module):
         dropout: float = 0.5,
         activation: LayerSpec = "relu",
         norm: LayerSpec | None = None,
-        head: LayerSpec = "linear",
+        head: LayerSpec | None = "linear",
         pretrained_checkpoint: str | None = None,
         freeze_encoder: bool = False,
     ) -> None:
         super().__init__()
-        self.encoder = GNNEncoder(in_dim, hidden_dim, num_layers, conv, dropout, activation, norm)
-        self.activation = build_layer(ACTIVATIONS, activation)
+        classic = head is None
+        self.encoder = GNNEncoder(
+            in_dim,
+            hidden_dim,
+            num_layers,
+            conv,
+            dropout,
+            activation,
+            norm,
+            out_dim=num_classes if classic else hidden_dim,
+        )
+        self.activation = nn.Identity() if classic else build_layer(ACTIVATIONS, activation)
         self.head = build_layer(MLPS, head, in_dim=hidden_dim, out_dim=num_classes)
         if pretrained_checkpoint:
             self.load_encoder(pretrained_checkpoint)

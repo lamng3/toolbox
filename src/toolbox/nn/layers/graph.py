@@ -4,6 +4,10 @@ Graphs use the PyG convention: ``edge_index`` is a ``(2, E)`` long tensor of ``(
 pairs, node features ``x`` are ``(N, F)``. Aggregation uses ``index_add_`` so no
 ``torch_scatter`` / ``torch_geometric`` install is needed; :mod:`toolbox.data.adapters` converts
 PyG ``Data`` objects to this format when PyG *is* available.
+
+The layers follow the standard definitions and are checked for numerical parity with PyTorch
+Geometric's ``GCNConv``, ``SAGEConv`` and ``GATConv`` in ``tests/unit/test_graph_parity.py``
+(same weights, same inputs, same outputs).
 """
 
 from __future__ import annotations
@@ -17,6 +21,8 @@ from toolbox.core.registry import GRAPH_CONVS
 
 
 def add_self_loops(edge_index: torch.Tensor, num_nodes: int) -> torch.Tensor:
+    """Give every node exactly one self-loop (existing ones are not duplicated)."""
+    edge_index = edge_index[:, edge_index[0] != edge_index[1]]
     loops = torch.arange(num_nodes, device=edge_index.device).repeat(2, 1)
     return torch.cat([edge_index, loops], dim=1)
 
@@ -45,11 +51,17 @@ def scatter_softmax(scores: torch.Tensor, index: torch.Tensor, num_nodes: int) -
 
 @GRAPH_CONVS.register("gcn")
 class GCNConv(nn.Module):
-    """Graph convolution (Kipf & Welling, 2017) with symmetric normalisation."""
+    """Graph convolution (Kipf & Welling, 2017): ``D^-1/2 (A + I) D^-1/2 X W + b``.
+
+    The bias is added *after* aggregation, as in the paper and PyG; adding it before would
+    scale it by each node's normalised degree. Weights use Glorot initialisation.
+    """
 
     def __init__(self, in_dim: int, out_dim: int, bias: bool = True) -> None:
         super().__init__()
-        self.linear = nn.Linear(in_dim, out_dim, bias=bias)
+        self.linear = nn.Linear(in_dim, out_dim, bias=False)
+        self.bias = nn.Parameter(torch.zeros(out_dim)) if bias else None
+        nn.init.xavier_uniform_(self.linear.weight)
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
         num_nodes = x.shape[0]
@@ -58,7 +70,8 @@ class GCNConv(nn.Module):
         deg = degree(dst, num_nodes, x.dtype)
         norm = deg.pow(-0.5)[src] * deg.pow(-0.5)[dst]
         h = self.linear(x)
-        return scatter_sum(h[src] * norm[:, None], dst, num_nodes)
+        out = scatter_sum(h[src] * norm[:, None], dst, num_nodes)
+        return out + self.bias if self.bias is not None else out
 
 
 @GRAPH_CONVS.register("sage")
@@ -80,17 +93,33 @@ class SAGEConv(nn.Module):
 
 @GRAPH_CONVS.register("gat")
 class GATConv(nn.Module):
-    """Graph attention (Veličković et al., 2018), multi-head with concatenated outputs."""
+    """Graph attention (Veličković et al., 2018), multi-head with concatenated outputs.
 
-    def __init__(self, in_dim: int, out_dim: int, heads: int = 4, negative_slope: float = 0.2):
+    ``out_dim`` is the total width (``heads × head_dim``), so GAT is a drop-in replacement for
+    the other convs. In PyG terms this is ``GATConv(in_dim, out_dim // heads, heads=heads)``.
+    When ``out_dim`` isn't divisible by ``heads`` (e.g. a classifier's output layer), each head
+    produces ``out_dim`` features and the heads are averaged, as in the paper's output layer
+    (PyG ``concat=False``).
+    """
+
+    def __init__(
+        self,
+        in_dim: int,
+        out_dim: int,
+        heads: int = 4,
+        negative_slope: float = 0.2,
+        bias: bool = True,
+    ) -> None:
         super().__init__()
-        if out_dim % heads:
-            raise ValueError(f"out_dim={out_dim} must be divisible by heads={heads}")
-        self.heads, self.head_dim = heads, out_dim // heads
-        self.linear = nn.Linear(in_dim, out_dim, bias=False)
+        self.concat = out_dim % heads == 0
+        self.heads = heads
+        self.head_dim = out_dim // heads if self.concat else out_dim
+        self.linear = nn.Linear(in_dim, heads * self.head_dim, bias=False)
         self.att_src = nn.Parameter(torch.empty(heads, self.head_dim))
         self.att_dst = nn.Parameter(torch.empty(heads, self.head_dim))
+        self.bias = nn.Parameter(torch.zeros(out_dim)) if bias else None
         self.negative_slope = negative_slope
+        nn.init.xavier_uniform_(self.linear.weight)
         nn.init.xavier_uniform_(self.att_src)
         nn.init.xavier_uniform_(self.att_dst)
 
@@ -101,5 +130,8 @@ class GATConv(nn.Module):
         h = self.linear(x).view(num_nodes, self.heads, self.head_dim)
         scores = (h * self.att_src).sum(-1)[src] + (h * self.att_dst).sum(-1)[dst]
         alpha = scatter_softmax(F.leaky_relu(scores, self.negative_slope), dst, num_nodes)
-        messages = (h[src] * alpha[..., None]).flatten(1)
-        return scatter_sum(messages, dst, num_nodes)
+        messages = h[src] * alpha[..., None]  # (E, heads, head_dim)
+        out = scatter_sum(messages.flatten(1), dst, num_nodes)
+        if not self.concat:
+            out = out.view(num_nodes, self.heads, self.head_dim).mean(dim=1)
+        return out + self.bias if self.bias is not None else out

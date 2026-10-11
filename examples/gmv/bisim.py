@@ -37,12 +37,36 @@ from examples.gmv.graph import adjacency_lists
 
 Colour = int
 DIGEST_BYTES = 8
-NEIGHBOUR_DEGREE_FREE_CONVS = frozenset({"sage", "gat"})
+NEIGHBOUR_DEGREE_FREE_CONVS = frozenset(
+    {
+        "sage",
+        "gat",  # toolbox reference layers
+        "pyg_sage",
+        "pyg_gat",
+        "pyg_gatv2",
+        "pyg_gin",
+        "pyg_transformer",  # PyG layers
+    }
+)
+PYG_MODEL_CONVS = {"GCN": "pyg_gcn", "GraphSAGE": "pyg_sage", "GAT": "pyg_gat", "GIN": "pyg_gin"}
 
 
 def conv_name(conv: str | Mapping[str, Any]) -> str:
     """Layer name from a spec: ``"gcn"`` or ``{"name": "gat", "heads": 8}``."""
     return conv if isinstance(conv, str) else str(conv["name"])
+
+
+def model_conv(model_spec: Mapping[str, Any]) -> str | Mapping[str, Any]:
+    """The message-passing layer of a model spec (toolbox ``conv`` slot or a PyG model).
+
+    Unknown models return ``"custom"``, which gets the conservative ``L + 1`` rounds.
+    """
+    if "conv" in model_spec:
+        conv: str | Mapping[str, Any] = model_spec["conv"]
+        return conv
+    if model_spec.get("name") == "pyg_model":
+        return PYG_MODEL_CONVS.get(str(model_spec.get("model", "GCN")), "custom")
+    return "custom"
 
 
 def rounds_for(num_layers: int, conv: str | Mapping[str, Any] = "gcn") -> int:
