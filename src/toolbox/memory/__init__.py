@@ -64,6 +64,26 @@ class HashingEmbedder(Embedder):
         return F.normalize(out, dim=-1)
 
 
+class SentenceTransformerEmbedder(Embedder):
+    """Any `sentence-transformers <https://sbert.net>`_ model, e.g. ``all-MiniLM-L6-v2``
+    (``pip install 'toolbox[embeddings]'``). The standard choice for semantic retrieval."""
+
+    def __init__(
+        self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2", device: str | None = None
+    ) -> None:
+        from toolbox.core.decorators import require
+
+        st = require("sentence_transformers", extra="embeddings")
+        self.model = st.SentenceTransformer(model_name, device=device)
+        dimension = getattr(self.model, "get_embedding_dimension", None)
+        dimension = dimension or self.model.get_sentence_embedding_dimension
+        self.dim = int(dimension())
+
+    def __call__(self, texts: Sequence[str]) -> torch.Tensor:
+        vectors = self.model.encode(list(texts), convert_to_tensor=True, normalize_embeddings=True)
+        return vectors.float().cpu()
+
+
 @dataclass
 class MemoryItem:
     state: str
@@ -167,5 +187,6 @@ __all__ = [
     "MemoryItem",
     "MemoryStore",
     "MemoryWriter",
+    "SentenceTransformerEmbedder",
     "augment_prompt",
 ]

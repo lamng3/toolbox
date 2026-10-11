@@ -80,3 +80,7 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
   it with `toolbox traces runs/<run>/traces`.
 * `metrics.jsonl` holds `reward_mean`, `reward_std`, `kl`, `clip_fraction`, `completion_tokens`,
   `grad_norm`, `eval/reward`.
+
+!!! tip "Production runs"
+    The same config runs on [TRL](trl.md) with `trainer.name=trl trainer.algorithm=grpo`.
+    TRL is the standard post-training library; the built-in trainer is the readable reference.

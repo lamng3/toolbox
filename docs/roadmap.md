@@ -21,6 +21,15 @@ The toolbox grows by adding components behind the existing interfaces. Planned n
 - [ ] An OpenTelemetry exporter for `ActionRecord`s.
 - [ ] Vector-database `RecordRepository` backends for memory.
 
+## Reuse more standard libraries
+
+- [x] PyTorch Geometric layers and models, TRL trainers, AnyJev readout, `torch.optim` /
+      `transformers` schedules, sentence-transformers embeddings, any `nn.Module`
+- [ ] Accelerate / DeepSpeed as distribution strategies
+- [ ] OpenTelemetry exporter for agent traces
+- [ ] lm-evaluation-harness tasks as evaluators
+- [ ] Math verifiers (e.g. `math-verify`) as rewards
+
 ## Infrastructure
 
 - [ ] KV cache + continuous batching in the reference `torch` engine (an inference-optimisation

@@ -101,3 +101,49 @@ def linear(optimizer: torch.optim.Optimizer, max_steps: int, warmup_steps: int =
         return max(0.0, (max_steps - step) / max(1, max_steps - warmup_steps))
 
     return LambdaLR(optimizer, factor)
+
+
+# -- reuse anything standard -----------------------------------------------------------------
+@OPTIMIZERS.register("torch")
+def torch_optimizer(
+    model: nn.Module, optimizer: str = "AdamW", **kwargs: object
+) -> torch.optim.Optimizer:
+    """Any ``torch.optim`` optimizer by class name, e.g. ``{name: torch, optimizer: RAdam}``."""
+    params = [p for p in model.parameters() if p.requires_grad]
+    cls = getattr(torch.optim, optimizer)
+    built: torch.optim.Optimizer = cls(params, **kwargs)
+    return built
+
+
+@SCHEDULERS.register("torch")
+def torch_scheduler(
+    optimizer: torch.optim.Optimizer, max_steps: int, scheduler: str = "StepLR", **kwargs: object
+) -> LRScheduler:
+    """Any ``torch.optim.lr_scheduler`` class by name, e.g. ``{name: torch, scheduler: StepLR,
+    step_size: 100}``. ``max_steps`` is available to configs that need it (``T_max``)."""
+    cls = getattr(torch.optim.lr_scheduler, scheduler)
+    built: LRScheduler = cls(optimizer, **kwargs)
+    return built
+
+
+@SCHEDULERS.register("hf")
+def hf_scheduler(
+    optimizer: torch.optim.Optimizer,
+    max_steps: int,
+    schedule: str = "cosine",
+    warmup_steps: int = 0,
+    **kwargs: object,
+) -> LRScheduler:
+    """Any Hugging Face ``transformers`` schedule (``linear``, ``cosine``, ``polynomial``,
+    ``warmup_stable_decay`` ...) via ``transformers.get_scheduler``."""
+    from toolbox.core.decorators import require
+
+    transformers = require("transformers", extra="llm")
+    built: LRScheduler = transformers.get_scheduler(
+        schedule,
+        optimizer,
+        num_warmup_steps=warmup_steps,
+        num_training_steps=max_steps,
+        scheduler_specific_kwargs=kwargs or None,
+    )
+    return built

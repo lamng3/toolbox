@@ -21,6 +21,7 @@ from toolbox.trainer.trainers import (
     SupervisedTrainer,
     frozen_copy,
 )
+from toolbox.trainer.trl_backend import TRLTrainer
 
 __all__ = [
     "BaseTrainer",
@@ -35,6 +36,7 @@ __all__ = [
     "PreferenceTrainer",
     "SampleLogger",
     "SupervisedTrainer",
+    "TRLTrainer",
     "Throughput",
     "TorchProfiler",
     "TrainerConfig",

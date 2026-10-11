@@ -41,3 +41,7 @@ Useful knobs: `trainer.precision=bf16`, `trainer.grad_accum_steps=8`,
 `experiment=sft_from_traces` fine-tunes on logged agent or policy actions, optionally keeping
 only rewarded ones (`data.min_reward=1`). See [Agent tracing](tracing.md) and
 [Memory and self-improvement](memory.md).
+
+!!! tip "Production runs"
+    The same config runs on [TRL](trl.md) with `trainer.name=trl trainer.algorithm=sft`.
+    TRL is the standard post-training library; the built-in trainer is the readable reference.

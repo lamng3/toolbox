@@ -46,8 +46,10 @@ class HFCausalLM(CausalLM):
     ) -> None:
         super().__init__()
         transformers = require("transformers", extra="llm")
+        # transformers 5 renamed `torch_dtype` to `dtype`.
+        dtype_key = "dtype" if int(transformers.__version__.split(".")[0]) >= 5 else "torch_dtype"
         kwargs: dict[str, Any] = {
-            "torch_dtype": DTYPES[dtype],
+            dtype_key: DTYPES[dtype],
             "trust_remote_code": trust_remote_code,
         }
         if attn_implementation:

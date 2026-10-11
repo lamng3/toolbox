@@ -50,6 +50,9 @@ recipes/           end-to-end workflows using the public API
 docs/              this site; the API reference and component catalog are generated
 ```
 
+Established libraries (Hugging Face, TRL, PyTorch Geometric, AnyJev, SGLang, vLLM ...) plug in
+as backends behind the same interfaces; see [Standard libraries first](backends.md).
+
 Every name you can select in a config is listed in the
 [component catalog](components.md), which is generated from the registries when the docs are
 built.

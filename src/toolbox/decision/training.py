@@ -110,17 +110,31 @@ def _accuracy(logps: torch.Tensor, target: torch.Tensor) -> float:
     return float((logps.argmax(-1) == target).float().mean())
 
 
+def _label_metrics(logps: torch.Tensor, batch: Batch) -> dict[str, float]:
+    """Accuracy when gold labels exist; teacher agreement when soft targets exist."""
+    metrics: dict[str, float] = {}
+    if "target" in batch:
+        metrics["accuracy"] = _accuracy(logps, batch["target"])
+    if "target_probs" in batch:
+        metrics["teacher_agreement"] = _accuracy(logps, batch["target_probs"].argmax(-1))
+    return metrics
+
+
 @OBJECTIVES.register("decision_ce")
 class DecisionCrossEntropy(SupervisedObjective):
     def __call__(self, model: nn.Module, batch: Batch) -> LossOutput:
         logps = _option_logprobs(model, batch)
         loss = F.nll_loss(logps, batch["target"])
-        return LossOutput(loss, {"accuracy": _accuracy(logps, batch["target"])})
+        return LossOutput(loss, _label_metrics(logps, batch))
 
 
 @OBJECTIVES.register("decision_distill")
 class DecisionDistillation(SupervisedObjective):
-    """KL(target ‖ model) over options; falls back to one-hot targets when none are given."""
+    """KL(teacher ‖ model) over options; falls back to one-hot gold labels without a teacher.
+
+    Needs no gold labels when ``target_probs`` (teacher distributions) are present, which is the
+    self-distillation setting of Tacit-style decision models.
+    """
 
     def __call__(self, model: nn.Module, batch: Batch) -> LossOutput:
         logps = _option_logprobs(model, batch)
@@ -129,7 +143,7 @@ class DecisionDistillation(SupervisedObjective):
             target = F.one_hot(batch["target"], logps.shape[-1]).float()
         safe_logps = logps.masked_fill(torch.isinf(logps), 0.0)
         kl = (target * (torch.log(target.clamp(min=1e-12)) - safe_logps)).sum(-1).mean()
-        return LossOutput(kl, {"accuracy": _accuracy(logps, batch["target"])})
+        return LossOutput(kl, _label_metrics(logps, batch))
 
 
 @OBJECTIVES.register("decision_pg")
@@ -149,8 +163,5 @@ class DecisionPolicyGradient(SupervisedObjective):
         loss = -(advantage * dist.log_prob(action)).mean() - self.entropy_coef * entropy
         return LossOutput(
             loss,
-            {
-                "reward": float(reward.mean()),
-                "accuracy": _accuracy(logps, batch["target"]),
-            },
+            {"reward": float(reward.mean()), **_label_metrics(logps, batch)},
         )

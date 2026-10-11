@@ -27,12 +27,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-llm = ["transformers>=4.44", "datasets>=2.20", "peft>=0.12", "accelerate>=0.33"]
+llm = ["transformers>=4.46", "datasets>=2.20", "peft>=0.12", "accelerate>=0.33", "trl>=0.12"]
 gnn = ["torch-geometric>=2.6"]
 serve-sglang = ["sglang[all]>=0.4"]
 serve-vllm = ["vllm>=0.6"]
 tracking = ["wandb>=0.17", "tensorboard>=2.16"]
 dist = ["deepspeed>=0.14"]
+embeddings = ["sentence-transformers>=3.0"]
+jev = ["anyjev[hf]>=0.3", "transformers>=4.46", "peft>=0.12"]
 rl = ["gymnasium>=0.29"]
 docs = [
   "mkdocs>=1.6",

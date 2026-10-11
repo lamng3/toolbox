@@ -68,11 +68,12 @@ trainer.fit()
 
 | Area | What's included |
 | --- | --- |
-| **Post-training** | `sft`, `dpo`, `ipo`, `slic`, `reward_bt` · chain stages with `model.init_from` |
+| **Post-training** | `sft`, `dpo`, `ipo`, `slic`, `reward_bt` · TRL backend (`trainer.name=trl`) · chain stages with `model.init_from` |
 | **Online RL** | `grpo`, `ppo_clip`, `reinforce` × advantages `group_relative`, Dr. GRPO, `rloo` · k3 KL · asymmetric clipping |
 | **Rewards** | `exact_match`, `format`, `length_penalty`, composite `weighted_sum`, learned `reward_model`, `llm_judge` |
 | **Models** | any Hugging Face causal LM (+ LoRA) · `tiny_gpt` for CPU tests · GCN / GraphSAGE / GAT · actor-critic |
-| **Layers & backends** | every block swappable by name ([guide](https://lamng3.github.io/toolbox/guides/layers/)) · PyTorch Geometric and Hugging Face as backends · any `nn.Module` via `torch_module` |
+| **Standard libraries** | reused, not rewritten: Hugging Face, TRL, PyTorch Geometric, AnyJev, SGLang/vLLM, Gymnasium · any `nn.Module` via `torch_module` ([why](https://lamng3.github.io/toolbox/concepts/backends/)) |
+| **Layers** | every block swappable by name ([guide](https://lamng3.github.io/toolbox/guides/layers/)) |
 | **Decision models** | option probabilities from next-token logits, debiased over rotations · CE / distillation / policy-gradient training |
 | **Agent tracing** | atomic `ActionRecord`s with nested spans and delayed feedback · traces → SFT / decision / DPO datasets |
 | **Memory** | episodic retrieval (in context) · expert iteration from traced successes (in weights) |

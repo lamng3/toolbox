@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
+from typing import Any
 
 from toolbox.core.constants import BYTE_VOCAB_SIZE
 from toolbox.core.decorators import require
@@ -90,6 +91,11 @@ class HFTokenizer(Tokenizer):
     @property
     def vocab_size(self) -> int:
         return len(self._tok)
+
+    @property
+    def hf_tokenizer(self) -> Any:
+        """The wrapped ``transformers`` tokenizer, for libraries that need it directly."""
+        return self._tok
 
     def encode(self, text: str, add_bos: bool = False, add_eos: bool = False) -> list[int]:
         ids: list[int] = self._tok.encode(text, add_special_tokens=False)

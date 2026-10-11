@@ -46,3 +46,7 @@ toolbox train experiment=reward_model_tiny
 toolbox train experiment=grpo_tiny reward=learned \
     reward.checkpoint=runs/reward_model_tiny/checkpoints/last.pt
 ```
+
+!!! tip "Production runs"
+    The same config runs on [TRL](trl.md) with `trainer.name=trl trainer.algorithm=dpo`.
+    TRL is the standard post-training library; the built-in trainer is the readable reference.

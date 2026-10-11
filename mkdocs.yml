@@ -94,12 +94,14 @@ nav:
   - Concepts:
       - Architecture: concepts/architecture.md
       - Configuration: concepts/configuration.md
+      - Standard libraries first: concepts/backends.md
       - Design patterns: concepts/design-patterns.md
       - Component catalog: concepts/components.md
   - Guides:
       - Supervised fine-tuning: guides/sft.md
       - Preference optimisation and reward models: guides/preference.md
       - Online RL (GRPO, PPO, RLOO): guides/grpo.md
+      - Post-training with TRL: guides/trl.md
       - Decision models: guides/decision-models.md
       - Agent tracing: guides/tracing.md
       - Memory and self-improvement: guides/memory.md

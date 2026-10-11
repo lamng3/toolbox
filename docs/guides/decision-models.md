@@ -46,6 +46,14 @@ toolbox train experiment=decision_rl_tiny
 Training data randomly rotates the options of each example (`augment_rotations=true`), so the
 model cannot learn a position shortcut.
 
+## Training a Jev model end to end
+
+[`examples/jev`](https://github.com/lamng3/toolbox/tree/main/examples/jev) is a full pipeline that
+uses [AnyJev](https://github.com/nokia-applied-research/AnyJev) for the readout and evaluation,
+and toolbox for training. A teacher labels decisions with no human labels needed; a student LLM
+learns to give that decision in one forward pass, in AnyJev's exact prompt format, so AnyJev can
+serve it directly.
+
 ## Data
 
 ```json
