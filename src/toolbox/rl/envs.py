@@ -51,7 +51,7 @@ class CartPole(Env):
     def __init__(self, max_steps: int = 500) -> None:
         self.max_steps = max_steps
         self._rng = random.Random()
-        self.state = np.zeros(4)
+        self.state: np.ndarray = np.zeros(4)
         self.steps = 0
 
     def reset(self, seed: int | None = None) -> tuple[np.ndarray, dict[str, Any]]:
@@ -78,7 +78,7 @@ class CartPole(Env):
         theta, theta_dot = theta + self.DT * theta_dot, theta_dot + self.DT * theta_acc
         self.state = np.array([x, x_dot, theta, theta_dot])
         self.steps += 1
-        terminated = abs(x) > self.POSITION_LIMIT or abs(theta) > self.ANGLE_LIMIT
+        terminated = bool(abs(x) > self.POSITION_LIMIT or abs(theta) > self.ANGLE_LIMIT)
         truncated = self.steps >= self.max_steps
         return self.state.astype(np.float32), 1.0, terminated, truncated, {}
 
