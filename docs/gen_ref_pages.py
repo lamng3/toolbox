@@ -23,3 +23,9 @@ for path in sorted((SRC / "toolbox").rglob("*.py")):
 
 with mkdocs_gen_files.open("reference/SUMMARY.md", "w") as nav_file:
     nav_file.writelines(nav.build_literate_nav())
+
+# The component catalog is generated from the registries, so it always matches the code.
+from toolbox.catalog import render_markdown  # noqa: E402
+
+with mkdocs_gen_files.open("concepts/components.md", "w") as catalog:
+    catalog.write(render_markdown())

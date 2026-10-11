@@ -41,8 +41,17 @@ src/toolbox/
 ├── eval/          standalone evaluators
 ├── configs/       the Hydra config tree (shipped inside the package)
 ├── experiment.py  ExperimentBuilder, load_config, run_experiment
+├── catalog.py     renders the component catalog for the docs
 └── cli.py         the `toolbox` command
+
+examples/<name>/   self-contained techniques built on toolbox (code, configs, tests, README)
+recipes/           end-to-end workflows using the public API
+docs/              this site; the API reference and component catalog are generated
 ```
+
+Every name you can select in a config is listed in the
+[component catalog](components.md), which is generated from the registries when the docs are
+built.
 
 ## The lifecycle of `toolbox train`
 

@@ -23,8 +23,8 @@ objective:
   kl_coef: 0.04
 ```
 
-There is no `_target_: package.module.Class` path, so configs survive refactors. You can list
-the valid names with `toolbox list`.
+There is no `_target_: package.module.Class` path, so configs survive refactors. The valid
+names are in the [component catalog](components.md) and in `toolbox list`.
 
 ## Experiments
 

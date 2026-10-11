@@ -52,6 +52,15 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 
     [:octicons-arrow-right-24: Extending](guides/extending.md)
 
+- **Examples from papers**
+
+    ---
+
+    Self-contained techniques built on toolbox, each with its code, configs, tests and a
+    citation. The first is GMV: serving GNN outputs as views.
+
+    [:octicons-arrow-right-24: Examples](examples/index.md)
+
 </div>
 
 ## What's supported
@@ -69,6 +78,23 @@ toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.gpus_per_node=
 | Serving | in-process torch, Hugging Face, **SGLang**, **vLLM**, any OpenAI-compatible server; benchmark CLI |
 | Scale-out | single device, DDP, FSDP; `torchrun`; SLURM with auto-requeue and resume |
 | Tracking | console, JSONL, TensorBoard, Weights & Biases, throughput, memory, `torch.profiler` traces |
+| Data | local JSONL, `builtin://` offline samples, `hf://org/name?split=train` Hub datasets |
+
+The [component catalog](concepts/components.md) lists every selectable name and config preset.
+It is generated from the code, so it is always complete.
+
+## A typical pipeline
+
+Each stage starts from the previous stage's checkpoint (`model.init_from`):
+
+```mermaid
+flowchart LR
+    SFT["SFT"] --> DPO["DPO"]
+    SFT --> GRPO["GRPO"]
+    RM["Reward model"] -. learned reward .-> GRPO
+    GRPO -- traced rollouts --> IT["SFT on successes<br/>(expert iteration)"]
+    IT --> GRPO
+```
 
 ## Design
 

@@ -39,6 +39,8 @@ toolbox config experiment=grpo_tiny                               # print the co
 toolbox list objective                                            # what's registered
 ```
 
+Every name and preset is also listed in the [component catalog](../concepts/components.md).
+
 ## 3. Chain post-training stages
 
 `model.init_from` starts a stage from the previous stage's checkpoint:

@@ -38,6 +38,7 @@ def adamw(
     eps: float = DEFAULT_ADAM_EPS,
     fused: bool | None = None,
 ) -> torch.optim.Optimizer:
+    """AdamW with weight decay applied only to matrices (not biases or norm scales)."""
     b1, b2 = tuple(betas)
     return torch.optim.AdamW(
         param_groups(model, weight_decay), lr=lr, betas=(b1, b2), eps=eps, fused=fused
@@ -46,6 +47,7 @@ def adamw(
 
 @OPTIMIZERS.register("adam")
 def adam(model: nn.Module, lr: float = 1e-3, weight_decay: float = 0.0) -> torch.optim.Optimizer:
+    """Adam with L2 weight decay (the classic GNN setting)."""
     params = [p for p in model.parameters() if p.requires_grad]
     return torch.optim.Adam(params, lr=lr, weight_decay=weight_decay)
 
@@ -54,6 +56,7 @@ def adam(model: nn.Module, lr: float = 1e-3, weight_decay: float = 0.0) -> torch
 def sgd(
     model: nn.Module, lr: float = 1e-2, momentum: float = 0.9, weight_decay: float = 0.0
 ) -> torch.optim.Optimizer:
+    """SGD with momentum."""
     params = [p for p in model.parameters() if p.requires_grad]
     return torch.optim.SGD(params, lr=lr, momentum=momentum, weight_decay=weight_decay)
 
@@ -66,6 +69,7 @@ def _warmup(step: int, warmup_steps: int) -> float:
 def constant(
     optimizer: torch.optim.Optimizer, max_steps: int, warmup_steps: int = 0
 ) -> LRScheduler:
+    """Linear warmup, then a constant learning rate."""
     return LambdaLR(optimizer, lambda step: _warmup(step, warmup_steps))
 
 

@@ -45,6 +45,12 @@ train via `ExperimentBuilder` with `--config-dir`, and cite the source with an h
 `examples/README.md`. Never copy code from
 unlicensed upstream repos; re-implement from the paper.
 
+## Docs
+
+Docs follow the code. Every change to behaviour, configs, CLI or components updates `docs/`
+in the same commit. `tests/test_docs.py` enforces the mechanical part, and the component
+catalog (`toolbox/catalog.py`) is generated at docs build time.
+
 ## Conventions
 
 Python ≥ 3.10, ruff line length 100, Google-style docstrings (they render in the API docs).

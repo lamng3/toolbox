@@ -32,7 +32,14 @@ troubleshooting note in the installation docs.
 - **Inject, don't construct.** Components receive their dependencies. Trainers never build
   models or datasets themselves.
 - **Optional dependencies are imported lazily** with `toolbox.core.require(module, extra)`.
-- **Docstrings** use Google style. They become the API reference on the docs site.
+- **Docstrings** use Google style. They become the API reference on the docs site, and the
+  first paragraph of each registered component becomes its entry in the component catalog.
+- **Docs follow the code.** Any change to behaviour, configs, CLI or components updates the
+  docs in the same commit. `tests/test_docs.py` fails CI when a component lacks a docstring,
+  an experiment or CLI command isn't mentioned in `docs/`, a package is missing from the
+  architecture page, a page is missing from the nav, or an example isn't indexed.
+- **Examples** live in `examples/<name>/` with their own tests, and are listed in
+  `examples/README.md` and `docs/examples/index.md`.
 - Keep tiny experiments CPU-runnable in seconds. They are the integration test suite.
 
 ## Commit messages

@@ -92,6 +92,7 @@ nav:
       - Architecture: concepts/architecture.md
       - Configuration: concepts/configuration.md
       - Design patterns: concepts/design-patterns.md
+      - Component catalog: concepts/components.md
   - Guides:
       - Supervised fine-tuning: guides/sft.md
       - Preference optimisation and reward models: guides/preference.md

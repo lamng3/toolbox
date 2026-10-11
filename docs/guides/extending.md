@@ -75,6 +75,16 @@ class MyTrainer(BaseTrainer):
 You get logging, evaluation, checkpointing, resuming, mixed precision, DDP and SLURM launching
 without writing them.
 
+Give the class or function a docstring: its first paragraph becomes the component's entry in
+the [component catalog](../concepts/components.md), and CI fails without one.
+
+## Reproducing a paper
+
+Put it in `examples/<name>/`, self-contained, with its own `README.md` (method, citation,
+results, what isn't reproduced), `run.py`, `configs/` and `tests/`. Then add one row to the
+table in `examples/README.md` and in the docs' [Examples](../examples/index.md) page.
+[`examples/gmv`](https://github.com/lamng3/toolbox/tree/main/examples/gmv) is the template.
+
 ## Shipping it as a plugin
 
 Put your components in a package and advertise the module:
