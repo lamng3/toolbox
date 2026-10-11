@@ -1,0 +1,5 @@
+name: gnn_pretrainer
+hidden_dim: 64
+num_layers: 2
+conv: gcn
+init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

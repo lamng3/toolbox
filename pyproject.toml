@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toolbox"
+version = "0.1.0"
+description = "A generic, pattern-driven toolbox for pretraining and post-training (SFT, DPO, GRPO, RL) of LLMs, GNNs and decision models."
+readme = "README.md"
+license = "CC-BY-4.0"
+requires-python = ">=3.10"
+authors = [{ name = "Lam Nguyen" }]
+keywords = ["llm", "rlhf", "grpo", "dpo", "gnn", "pretraining", "post-training", "slurm"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "torch>=2.2",
+  "numpy>=1.24",
+  "hydra-core>=1.3.2",
+  "omegaconf>=2.3",
+  "typer>=0.12",
+  "rich>=13.0",
+]
+
+[project.optional-dependencies]
+llm = ["transformers>=4.44", "datasets>=2.20", "peft>=0.12", "accelerate>=0.33"]
+gnn = ["torch-geometric>=2.5"]
+serve-sglang = ["sglang[all]>=0.4"]
+serve-vllm = ["vllm>=0.6"]
+tracking = ["wandb>=0.17", "tensorboard>=2.16"]
+dist = ["deepspeed>=0.14"]
+rl = ["gymnasium>=0.29"]
+docs = [
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocstrings[python]>=0.25",
+  "mkdocs-gen-files>=0.5",
+  "mkdocs-literate-nav>=0.6",
+  "mkdocs-section-index>=0.3",
+]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6", "mypy>=1.10", "pre-commit>=3.7"]
+
+[project.scripts]
+toolbox = "toolbox.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/lamng3/toolbox"
+Documentation = "https://lamng3.github.io/toolbox"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/toolbox"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N"]
+ignore = ["N812", "RUF012", "B008", "N806", "B905", "B024", "B027", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["N802"]
+"scripts/make_builtin_data.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+check_untyped_defs = true
+files = ["src/toolbox"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+  "slow: integration tests that run tiny experiments end-to-end",
+  "gpu: requires a CUDA device",
+]

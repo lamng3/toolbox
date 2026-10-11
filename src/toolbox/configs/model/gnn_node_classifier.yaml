@@ -1,0 +1,6 @@
+name: gnn_node_classifier
+hidden_dim: 64
+num_layers: 2
+conv: gcn
+pretrained_checkpoint: null
+freeze_encoder: false

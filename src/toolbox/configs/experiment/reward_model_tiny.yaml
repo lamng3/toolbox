@@ -1,0 +1,11 @@
+# @package _global_
+# Bradley–Terry reward model on preference pairs (the "RM" stage of RLHF).
+defaults:
+  - override /model: tiny_reward_model
+  - override /data: preference_arithmetic
+  - override /objective: reward_bt
+  - override /trainer: supervised
+
+name: reward_model_tiny
+trainer: {max_steps: 100, batch_size: 16, eval_every: 50}
+optimizer: {lr: 1.0e-3}

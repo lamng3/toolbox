@@ -1,0 +1,12 @@
+# @package _global_
+# DPO on (correct, wrong) answer pairs. Start from an SFT checkpoint in practice:
+#   toolbox train experiment=dpo_tiny model.name=... (or load weights via a model preset)
+defaults:
+  - override /model: tiny_gpt
+  - override /data: preference_arithmetic
+  - override /objective: dpo
+  - override /trainer: preference
+
+name: dpo_tiny
+trainer: {max_steps: 100, batch_size: 16, eval_every: 50}
+optimizer: {lr: 5.0e-4}

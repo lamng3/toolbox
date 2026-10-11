@@ -1,0 +1,3 @@
+name: fsdp
+mixed_precision: bf16
+auto_wrap: true

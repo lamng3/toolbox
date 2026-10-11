@@ -1,0 +1,110 @@
+site_name: toolbox
+site_description: A pattern-driven toolbox for post-training (SFT, DPO, GRPO, RL), decision models, agent tracing and GNNs.
+site_url: https://lamng3.github.io/toolbox/
+repo_url: https://github.com/lamng3/toolbox
+repo_name: lamng3/toolbox
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2026 Lam Nguyen — CC BY 4.0
+
+theme:
+  name: material
+  font:
+    text: Source Serif 4
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-night, name: Dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-sunny, name: Light mode}
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - gen-files:
+      scripts: [docs/gen_ref_pages.py]
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_symbol_type_heading: true
+            members_order: source
+            merge_init_into_class: true
+            separate_signature: true
+            signature_crossrefs: true
+            filters: ["!^_"]
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc: {permalink: true}
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight: {anchor_linenums: true}
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed: {alternate_style: true}
+  - pymdownx.arithmatex: {generic: true}
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - GPU VMs and SLURM: getting-started/hpc.md
+  - Concepts:
+      - Architecture: concepts/architecture.md
+      - Configuration: concepts/configuration.md
+      - Design patterns: concepts/design-patterns.md
+  - Guides:
+      - Supervised fine-tuning: guides/sft.md
+      - Preference optimisation and reward models: guides/preference.md
+      - Online RL (GRPO, PPO, RLOO): guides/grpo.md
+      - Decision models: guides/decision-models.md
+      - Agent tracing: guides/tracing.md
+      - Memory and self-improvement: guides/memory.md
+      - Graph neural networks: guides/gnn.md
+      - Environment RL: guides/env-rl.md
+      - Serving and inference: guides/serving.md
+      - Profiling: guides/profiling.md
+      - Pretraining: guides/pretraining.md
+      - Extending the toolbox: guides/extending.md
+  - API reference: reference/
+  - Roadmap: roadmap.md
+  - Contributing: contributing.md

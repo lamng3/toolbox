@@ -1,0 +1,4 @@
+name: grpo
+clip_eps: 0.2
+kl_coef: 0.04
+loss_agg: seq_mean_token_mean

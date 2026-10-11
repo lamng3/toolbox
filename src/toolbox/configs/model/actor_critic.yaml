@@ -1,0 +1,3 @@
+name: actor_critic
+hidden_dims: [64, 64]
+init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

@@ -1,0 +1,6 @@
+# Real post-training starts here: any HF causal LM works the same way.
+name: hf_causal_lm
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+dtype: bfloat16
+gradient_checkpointing: true
+init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

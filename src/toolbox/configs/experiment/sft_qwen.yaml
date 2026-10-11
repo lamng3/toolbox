@@ -1,0 +1,15 @@
+# @package _global_
+# SFT of Qwen2.5-0.5B-Instruct with LoRA on your own JSONL ({"prompt","response"}).
+#   toolbox train experiment=sft_qwen data.path=data/processed/my_sft.jsonl
+defaults:
+  - override /tokenizer: qwen2_5
+  - override /model: qwen2_5_0_5b_lora
+  - override /data: sft_arithmetic
+  - override /objective: sft
+  - override /trainer: supervised
+
+name: sft_qwen
+data: {chat_template: true, max_length: 1024}
+trainer: {max_steps: 1000, batch_size: 8, grad_accum_steps: 4, precision: bf16, save_every: 200}
+optimizer: {lr: 2.0e-4, weight_decay: 0.0}
+scheduler: {name: cosine, warmup_steps: 50}

@@ -1,0 +1,6 @@
+name: tiny_reward_model
+d_model: 64
+n_layers: 2
+n_heads: 4
+max_seq_len: 256
+init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

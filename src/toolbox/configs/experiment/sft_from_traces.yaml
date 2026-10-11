@@ -1,0 +1,14 @@
+# @package _global_
+# Expert iteration: fine-tune on the policy's own successful rollouts logged by
+# `trace_rollouts` during GRPO (or on any agent's action traces).
+#   toolbox train experiment=grpo_tiny
+#   toolbox train experiment=sft_from_traces data.path=runs/grpo_tiny/traces
+defaults:
+  - override /model: tiny_gpt
+  - override /data: traces
+  - override /objective: sft
+  - override /trainer: supervised
+
+name: sft_from_traces
+trainer: {max_steps: 50, batch_size: 16, eval_every: 0}
+optimizer: {lr: 5.0e-4}

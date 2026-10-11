@@ -1,0 +1,11 @@
+# @package _global_
+# Supervised fine-tuning on arithmetic Q/A — CPU, ~1 minute.
+defaults:
+  - override /model: tiny_gpt
+  - override /data: sft_arithmetic
+  - override /objective: sft
+  - override /trainer: supervised
+
+name: sft_tiny
+trainer: {max_steps: 200, batch_size: 32, eval_every: 50}
+optimizer: {lr: 1.0e-3}

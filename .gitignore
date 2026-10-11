@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.python-version.local
+build/
+dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Experiments & data (keep the folder skeleton)
+runs/
+outputs/
+multirun/
+wandb/
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.pt
+*.safetensors
+
+# Docs build
+site/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

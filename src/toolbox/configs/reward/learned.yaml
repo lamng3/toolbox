@@ -1,0 +1,6 @@
+# Learned reward from a reward-model checkpoint (train one with experiment=reward_model_tiny).
+#   toolbox train experiment=grpo_tiny reward=learned reward.checkpoint=runs/reward_model_tiny/checkpoints/last.pt
+name: reward_model
+checkpoint: ???
+model: {name: tiny_reward_model, d_model: 64, n_layers: 2, n_heads: 4, max_seq_len: 256}
+device: cpu

@@ -1,0 +1,7 @@
+# @package _global_
+# Decision model trained by policy gradient: only "was the chosen option right?" is observed.
+defaults:
+  - decision_tiny
+  - override /objective: decision_pg
+
+name: decision_rl_tiny

@@ -1,0 +1,6 @@
+name: prompts
+path: hf://openai/gsm8k?config=main&split=train
+prompt_key: question
+answer_key: answer
+chat_template: true
+eval_fraction: 0.02

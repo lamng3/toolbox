@@ -1,0 +1,4 @@
+name: synthetic_graph
+num_nodes: 500
+num_classes: 4
+feature_dim: 32

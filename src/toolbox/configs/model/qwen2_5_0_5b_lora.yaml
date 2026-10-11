@@ -1,0 +1,6 @@
+name: hf_causal_lm
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+dtype: bfloat16
+gradient_checkpointing: true
+lora: {r: 16, lora_alpha: 32, lora_dropout: 0.05, target_modules: all-linear, task_type: CAUSAL_LM}
+init_from: null  # checkpoint of a previous stage, e.g. runs/sft_tiny/checkpoints/last.pt

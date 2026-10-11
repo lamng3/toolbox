@@ -1,0 +1,30 @@
+# @package _global_
+# GRPO on GSM8K with Qwen2.5-0.5B-Instruct + LoRA. Needs a GPU and `toolbox[llm]`.
+#   toolbox launch experiment=grpo_qwen_gsm8k launcher=slurm launcher.partition=gpu
+defaults:
+  - override /tokenizer: qwen2_5
+  - override /model: qwen2_5_0_5b_lora
+  - override /data: gsm8k
+  - override /objective: grpo
+  - override /trainer: grpo
+  - override /reward: math_with_format
+  - override /advantage: dr_grpo
+
+name: grpo_qwen_gsm8k
+trainer:
+  max_steps: 500
+  batch_size: 8
+  group_size: 8
+  max_new_tokens: 384
+  temperature: 0.9
+  precision: bf16
+  eval_every: 50
+  save_every: 50
+optimizer: {lr: 1.0e-5, weight_decay: 0.0}
+scheduler: {name: cosine, warmup_steps: 20}
+callbacks:
+  - {name: console, log_every: 1}
+  - {name: jsonl}
+  - {name: sample_logger, every: 10}
+  - {name: trace_rollouts}
+  - {name: memory_monitor}

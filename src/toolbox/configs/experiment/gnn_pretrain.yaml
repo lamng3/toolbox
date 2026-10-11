@@ -1,0 +1,13 @@
+# @package _global_
+# Self-supervised GNN pretraining (GraphMAE masked-feature reconstruction).
+# objective=graph_contrastive switches to GRACE-style contrastive pretraining.
+defaults:
+  - override /model: gnn_pretrainer
+  - override /data: synthetic_graph
+  - override /objective: masked_feature
+  - override /trainer: supervised
+
+name: gnn_pretrain
+tokenizer: null
+trainer: {max_steps: 200, batch_size: 1, eval_every: 0}
+optimizer: {lr: 1.0e-3, weight_decay: 5.0e-4}

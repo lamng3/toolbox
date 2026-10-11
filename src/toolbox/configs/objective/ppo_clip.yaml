@@ -1,0 +1,3 @@
+name: ppo_clip
+clip_eps: 0.2
+kl_coef: 0.0

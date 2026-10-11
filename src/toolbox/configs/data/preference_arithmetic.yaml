@@ -1,0 +1,3 @@
+name: preference
+path: builtin://preference.jsonl
+max_length: 64

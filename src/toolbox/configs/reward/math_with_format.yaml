@@ -1,0 +1,4 @@
+name: weighted_sum
+components:
+  - {name: exact_match, extract: last_number, weight: 1.0}
+  - {name: length_penalty, target_chars: 300, weight: 0.05}

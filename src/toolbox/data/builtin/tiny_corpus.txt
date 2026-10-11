@@ -1,0 +1,19 @@
+A language model assigns probabilities to sequences of tokens. Pretraining teaches it to predict the next token on a large corpus of text.
+
+Post-training adapts a pretrained model to follow instructions, prefer helpful answers, and reason. Supervised fine-tuning, preference optimisation and reinforcement learning are the common tools.
+
+Supervised fine-tuning imitates demonstrations. The loss is the cross-entropy of the response tokens given the prompt; prompt tokens are masked out.
+
+Direct preference optimisation learns from pairs of answers. It increases the likelihood of the chosen answer relative to the rejected one, measured against a frozen reference model.
+
+Group relative policy optimisation samples several answers per prompt, scores them with a reward function, and normalises rewards within the group to obtain advantages. No value network is needed.
+
+A graph neural network passes messages along edges. Each layer aggregates the features of neighbours and updates the representation of every node.
+
+Self-supervised graph pretraining masks node features and asks the network to reconstruct them, or contrasts two augmented views of the same graph.
+
+A decision model reads the probability of each option from the next-token distribution. Reading every rotation of the options removes position bias.
+
+Inference engines such as SGLang and vLLM batch requests continuously and cache key-value states to serve models with high throughput.
+
+Experiments should be reproducible: fix the seed, save the resolved configuration, and record the code version with every checkpoint.

@@ -1,0 +1,17 @@
+# Edit for your cluster (or override: launcher.partition=gpu launcher.account=myproj).
+name: slurm
+job_name: ${name}
+partition: null
+account: null
+qos: null
+constraint: null
+nodes: 1
+gpus_per_node: 1
+cpus_per_task: 8
+mem: 64G
+time: "04:00:00"
+requeue: true
+setup:
+  - "cd ${oc.env:PWD}"
+  - "source .venv/bin/activate"
+env: {}  # e.g. {HF_HOME: /scratch/$USER/hf, WANDB_MODE: offline}

@@ -1,0 +1,3 @@
+name: text_lm
+path: builtin://tiny_corpus.txt
+block_size: 64

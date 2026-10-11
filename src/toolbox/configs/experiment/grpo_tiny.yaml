@@ -1,0 +1,20 @@
+# @package _global_
+# GRPO with a verifiable exact-match reward on arithmetic prompts — CPU smoke test of the
+# full online-RL loop (rollout → reward → group advantages → clipped update).
+defaults:
+  - override /model: tiny_gpt
+  - override /data: prompts_arithmetic
+  - override /objective: grpo
+  - override /trainer: grpo
+  - override /reward: exact_match
+  - override /advantage: group_relative
+
+name: grpo_tiny
+trainer: {max_steps: 20, batch_size: 4, group_size: 4, max_new_tokens: 8, eval_every: 10}
+optimizer: {lr: 1.0e-4}
+callbacks:
+  - {name: console, log_every: 1}
+  - {name: jsonl}
+  - {name: sample_logger, every: 5}
+  - {name: trace_rollouts}
+  - {name: memory_writer, min_reward: 1.0}

@@ -1,0 +1,3 @@
+name: sft
+path: builtin://sft.jsonl
+max_length: 64

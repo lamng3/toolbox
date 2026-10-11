@@ -1,0 +1,16 @@
+# @package _global_
+# Node classification, initialised from the pretrained encoder:
+#   toolbox train experiment=gnn_pretrain
+#   toolbox train experiment=gnn_finetune
+# Set model.pretrained_checkpoint=null to train from scratch and compare.
+defaults:
+  - override /model: gnn_node_classifier
+  - override /data: synthetic_graph
+  - override /objective: node_classification
+  - override /trainer: supervised
+
+name: gnn_finetune
+tokenizer: null
+model: {pretrained_checkpoint: runs/gnn_pretrain/checkpoints/last.pt}
+trainer: {max_steps: 100, batch_size: 1, eval_every: 0}
+optimizer: {lr: 1.0e-2, weight_decay: 5.0e-4}

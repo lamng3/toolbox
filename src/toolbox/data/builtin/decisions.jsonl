@@ -1,0 +1,256 @@
+{"state": "Numbers a=19, b=7.", "question": "Which is larger: 19 or 7?", "options": ["19", "7"], "answer": "19"}
+{"state": "Numbers a=11, b=16.", "question": "Is 11 greater than 16?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=6, b=20.", "question": "Is 6 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=20, b=15.", "question": "Is 20 + 15 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=7, b=18.", "question": "Is 7 greater than 18?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=8, b=5.", "question": "Is 8 greater than 5?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=2, b=18.", "question": "Is 2 + 18 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=7, b=14.", "question": "Is 7 + 14 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=3, b=6.", "question": "Which is larger: 3 or 6?", "options": ["3", "6"], "answer": "6"}
+{"state": "Numbers a=14, b=2.", "question": "Is 14 greater than 2?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=20, b=12.", "question": "Is 20 + 12 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=8, b=13.", "question": "Is 8 + 13 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=19, b=10.", "question": "Is 19 + 10 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=9, b=0.", "question": "Is 9 greater than 0?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=0, b=8.", "question": "Is 0 + 8 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=12, b=13.", "question": "Is 12 greater than 13?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=20, b=21.", "question": "Is 20 + 21 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=12, b=1.", "question": "Which is larger: 12 or 1?", "options": ["12", "1"], "answer": "12"}
+{"state": "Numbers a=14, b=11.", "question": "Which is larger: 14 or 11?", "options": ["14", "11"], "answer": "14"}
+{"state": "Numbers a=4, b=18.", "question": "Which is larger: 4 or 18?", "options": ["4", "18"], "answer": "18"}
+{"state": "Numbers a=8, b=10.", "question": "Which is larger: 8 or 10?", "options": ["8", "10"], "answer": "10"}
+{"state": "Numbers a=12, b=15.", "question": "Is 12 greater than 15?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=4, b=1.", "question": "Which is larger: 4 or 1?", "options": ["4", "1"], "answer": "4"}
+{"state": "Numbers a=18, b=11.", "question": "Is 18 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=0, b=2.", "question": "Is 0 + 2 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=3, b=17.", "question": "Is 3 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=1, b=10.", "question": "Is 1 + 10 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=10, b=12.", "question": "Is 10 greater than 12?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=20, b=8.", "question": "Is 20 greater than 8?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=4, b=19.", "question": "Is 4 + 19 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=12, b=9.", "question": "Is 12 greater than 9?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=1, b=5.", "question": "Which is larger: 1 or 5?", "options": ["1", "5"], "answer": "5"}
+{"state": "Numbers a=4, b=15.", "question": "Is 4 greater than 15?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=20, b=1.", "question": "Which is larger: 20 or 1?", "options": ["20", "1"], "answer": "20"}
+{"state": "Numbers a=16, b=1.", "question": "Which is larger: 16 or 1?", "options": ["16", "1"], "answer": "16"}
+{"state": "Numbers a=20, b=12.", "question": "Which is larger: 20 or 12?", "options": ["20", "12"], "answer": "20"}
+{"state": "Numbers a=11, b=18.", "question": "Is 11 greater than 18?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=2, b=17.", "question": "Is 2 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=8, b=6.", "question": "Is 8 greater than 6?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=10, b=8.", "question": "Is 10 + 8 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=14.", "question": "Is 16 + 14 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=14, b=17.", "question": "Is 14 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=1, b=20.", "question": "Is 1 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=5, b=20.", "question": "Which is larger: 5 or 20?", "options": ["5", "20"], "answer": "20"}
+{"state": "Numbers a=1, b=10.", "question": "Which is larger: 1 or 10?", "options": ["1", "10"], "answer": "10"}
+{"state": "Numbers a=6, b=20.", "question": "Is 6 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=19, b=7.", "question": "Is 19 + 7 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=5.", "question": "Is 16 + 5 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=10, b=20.", "question": "Which is larger: 10 or 20?", "options": ["10", "20"], "answer": "20"}
+{"state": "Numbers a=15, b=17.", "question": "Is 15 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=17, b=2.", "question": "Is 17 greater than 2?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=10, b=0.", "question": "Which is larger: 10 or 0?", "options": ["10", "0"], "answer": "10"}
+{"state": "Numbers a=3, b=13.", "question": "Is 3 greater than 13?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=11, b=18.", "question": "Which is larger: 11 or 18?", "options": ["11", "18"], "answer": "18"}
+{"state": "Numbers a=10, b=12.", "question": "Is 10 + 12 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=11, b=20.", "question": "Which is larger: 11 or 20?", "options": ["11", "20"], "answer": "20"}
+{"state": "Numbers a=4, b=10.", "question": "Is 4 greater than 10?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=5, b=4.", "question": "Is 5 greater than 4?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=10, b=19.", "question": "Is 10 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=1, b=13.", "question": "Is 1 greater than 13?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=1, b=9.", "question": "Which is larger: 1 or 9?", "options": ["1", "9"], "answer": "9"}
+{"state": "Numbers a=1, b=19.", "question": "Is 1 + 19 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=5, b=11.", "question": "Which is larger: 5 or 11?", "options": ["5", "11"], "answer": "11"}
+{"state": "Numbers a=13, b=1.", "question": "Is 13 greater than 1?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=11, b=19.", "question": "Is 11 + 19 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=8, b=9.", "question": "Which is larger: 8 or 9?", "options": ["8", "9"], "answer": "9"}
+{"state": "Numbers a=14, b=13.", "question": "Which is larger: 14 or 13?", "options": ["14", "13"], "answer": "14"}
+{"state": "Numbers a=0, b=14.", "question": "Is 0 greater than 14?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=6, b=12.", "question": "Is 6 + 12 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=11, b=3.", "question": "Is 11 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=0, b=11.", "question": "Is 0 greater than 11?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=5, b=12.", "question": "Is 5 greater than 12?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=20, b=0.", "question": "Which is larger: 20 or 0?", "options": ["20", "0"], "answer": "20"}
+{"state": "Numbers a=14, b=17.", "question": "Is 14 + 17 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=15, b=16.", "question": "Which is larger: 15 or 16?", "options": ["15", "16"], "answer": "16"}
+{"state": "Numbers a=1, b=17.", "question": "Is 1 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=8, b=0.", "question": "Is 8 + 0 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=3.", "question": "Which is larger: 16 or 3?", "options": ["16", "3"], "answer": "16"}
+{"state": "Numbers a=10, b=11.", "question": "Is 10 greater than 11?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=15, b=1.", "question": "Is 15 greater than 1?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=16, b=20.", "question": "Is 16 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=1, b=0.", "question": "Is 1 + 0 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=10, b=5.", "question": "Is 10 + 5 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=4, b=5.", "question": "Which is larger: 4 or 5?", "options": ["4", "5"], "answer": "5"}
+{"state": "Numbers a=5, b=20.", "question": "Is 5 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=19.", "question": "Which is larger: 7 or 19?", "options": ["7", "19"], "answer": "19"}
+{"state": "Numbers a=0, b=15.", "question": "Is 0 + 15 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=12, b=1.", "question": "Which is larger: 12 or 1?", "options": ["12", "1"], "answer": "12"}
+{"state": "Numbers a=7, b=20.", "question": "Is 7 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=10, b=5.", "question": "Is 10 + 5 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=11, b=7.", "question": "Is 11 greater than 7?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=13, b=14.", "question": "Is 13 greater than 14?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=18, b=4.", "question": "Is 18 + 4 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=18, b=0.", "question": "Is 18 + 0 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=18, b=0.", "question": "Is 18 greater than 0?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=12, b=5.", "question": "Which is larger: 12 or 5?", "options": ["12", "5"], "answer": "12"}
+{"state": "Numbers a=0, b=1.", "question": "Is 0 greater than 1?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=16, b=0.", "question": "Is 16 + 0 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=1, b=3.", "question": "Is 1 greater than 3?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=19, b=4.", "question": "Which is larger: 19 or 4?", "options": ["19", "4"], "answer": "19"}
+{"state": "Numbers a=12, b=0.", "question": "Is 12 greater than 0?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=13, b=18.", "question": "Is 13 + 18 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=10, b=7.", "question": "Which is larger: 10 or 7?", "options": ["10", "7"], "answer": "10"}
+{"state": "Numbers a=11, b=16.", "question": "Is 11 greater than 16?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=17, b=12.", "question": "Is 17 greater than 12?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=4, b=13.", "question": "Is 4 greater than 13?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=11, b=3.", "question": "Which is larger: 11 or 3?", "options": ["11", "3"], "answer": "11"}
+{"state": "Numbers a=13, b=7.", "question": "Is 13 + 7 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=12, b=7.", "question": "Is 12 + 7 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=7, b=20.", "question": "Is 7 + 20 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=12, b=18.", "question": "Is 12 + 18 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=8, b=9.", "question": "Is 8 greater than 9?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=11, b=17.", "question": "Which is larger: 11 or 17?", "options": ["11", "17"], "answer": "17"}
+{"state": "Numbers a=19, b=20.", "question": "Is 19 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=8.", "question": "Is 7 + 8 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=19, b=10.", "question": "Is 19 greater than 10?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=20, b=3.", "question": "Is 20 + 3 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=1, b=4.", "question": "Which is larger: 1 or 4?", "options": ["1", "4"], "answer": "4"}
+{"state": "Numbers a=12, b=0.", "question": "Which is larger: 12 or 0?", "options": ["12", "0"], "answer": "12"}
+{"state": "Numbers a=12, b=13.", "question": "Is 12 + 13 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=14, b=19.", "question": "Is 14 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=5, b=6.", "question": "Is 5 + 6 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=15, b=13.", "question": "Is 15 + 13 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=18, b=9.", "question": "Is 18 greater than 9?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=3, b=11.", "question": "Which is larger: 3 or 11?", "options": ["3", "11"], "answer": "11"}
+{"state": "Numbers a=4, b=20.", "question": "Is 4 + 20 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=15, b=20.", "question": "Is 15 + 20 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=1, b=6.", "question": "Which is larger: 1 or 6?", "options": ["1", "6"], "answer": "6"}
+{"state": "Numbers a=5, b=18.", "question": "Is 5 + 18 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=9, b=12.", "question": "Is 9 + 12 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=1, b=9.", "question": "Which is larger: 1 or 9?", "options": ["1", "9"], "answer": "9"}
+{"state": "Numbers a=13, b=1.", "question": "Which is larger: 13 or 1?", "options": ["13", "1"], "answer": "13"}
+{"state": "Numbers a=13, b=8.", "question": "Which is larger: 13 or 8?", "options": ["13", "8"], "answer": "13"}
+{"state": "Numbers a=6, b=11.", "question": "Is 6 + 11 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=4, b=3.", "question": "Is 4 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=11, b=5.", "question": "Which is larger: 11 or 5?", "options": ["11", "5"], "answer": "11"}
+{"state": "Numbers a=13, b=18.", "question": "Is 13 greater than 18?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=14, b=2.", "question": "Is 14 + 2 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=2, b=13.", "question": "Which is larger: 2 or 13?", "options": ["2", "13"], "answer": "13"}
+{"state": "Numbers a=17, b=4.", "question": "Which is larger: 17 or 4?", "options": ["17", "4"], "answer": "17"}
+{"state": "Numbers a=4, b=6.", "question": "Is 4 greater than 6?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=0.", "question": "Is 7 greater than 0?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=4, b=15.", "question": "Which is larger: 4 or 15?", "options": ["4", "15"], "answer": "15"}
+{"state": "Numbers a=19, b=9.", "question": "Is 19 + 9 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=10, b=3.", "question": "Which is larger: 10 or 3?", "options": ["10", "3"], "answer": "10"}
+{"state": "Numbers a=8, b=5.", "question": "Is 8 + 5 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=20, b=16.", "question": "Is 20 + 16 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=17, b=4.", "question": "Is 17 + 4 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=17, b=9.", "question": "Is 17 + 9 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=12, b=11.", "question": "Is 12 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=15, b=16.", "question": "Is 15 + 16 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=13, b=14.", "question": "Is 13 + 14 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=4, b=5.", "question": "Is 4 greater than 5?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=18, b=19.", "question": "Is 18 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=16, b=3.", "question": "Which is larger: 16 or 3?", "options": ["16", "3"], "answer": "16"}
+{"state": "Numbers a=20, b=6.", "question": "Which is larger: 20 or 6?", "options": ["20", "6"], "answer": "20"}
+{"state": "Numbers a=20, b=19.", "question": "Which is larger: 20 or 19?", "options": ["20", "19"], "answer": "20"}
+{"state": "Numbers a=3, b=8.", "question": "Which is larger: 3 or 8?", "options": ["3", "8"], "answer": "8"}
+{"state": "Numbers a=19, b=5.", "question": "Which is larger: 19 or 5?", "options": ["19", "5"], "answer": "19"}
+{"state": "Numbers a=2, b=1.", "question": "Is 2 + 1 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=3, b=11.", "question": "Is 3 greater than 11?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=15, b=10.", "question": "Which is larger: 15 or 10?", "options": ["15", "10"], "answer": "15"}
+{"state": "Numbers a=14, b=11.", "question": "Is 14 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=8, b=15.", "question": "Which is larger: 8 or 15?", "options": ["8", "15"], "answer": "15"}
+{"state": "Numbers a=5, b=17.", "question": "Is 5 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=2, b=16.", "question": "Which is larger: 2 or 16?", "options": ["2", "16"], "answer": "16"}
+{"state": "Numbers a=0, b=20.", "question": "Is 0 greater than 20?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=16, b=13.", "question": "Is 16 greater than 13?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=6, b=14.", "question": "Which is larger: 6 or 14?", "options": ["6", "14"], "answer": "14"}
+{"state": "Numbers a=12, b=8.", "question": "Which is larger: 12 or 8?", "options": ["12", "8"], "answer": "12"}
+{"state": "Numbers a=18, b=4.", "question": "Is 18 greater than 4?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=5, b=14.", "question": "Is 5 + 14 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=1, b=12.", "question": "Which is larger: 1 or 12?", "options": ["1", "12"], "answer": "12"}
+{"state": "Numbers a=20, b=18.", "question": "Is 20 greater than 18?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=10, b=7.", "question": "Is 10 + 7 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=14, b=1.", "question": "Which is larger: 14 or 1?", "options": ["14", "1"], "answer": "14"}
+{"state": "Numbers a=19, b=3.", "question": "Is 19 + 3 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=15.", "question": "Is 16 + 15 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=20, b=12.", "question": "Which is larger: 20 or 12?", "options": ["20", "12"], "answer": "20"}
+{"state": "Numbers a=8, b=5.", "question": "Is 8 + 5 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=17, b=11.", "question": "Is 17 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=9, b=19.", "question": "Is 9 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=14, b=2.", "question": "Is 14 greater than 2?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=15, b=12.", "question": "Is 15 greater than 12?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=13, b=17.", "question": "Which is larger: 13 or 17?", "options": ["13", "17"], "answer": "17"}
+{"state": "Numbers a=8, b=15.", "question": "Is 8 greater than 15?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=3, b=9.", "question": "Is 3 greater than 9?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=11, b=3.", "question": "Is 11 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=1, b=4.", "question": "Is 1 greater than 4?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=17, b=6.", "question": "Which is larger: 17 or 6?", "options": ["17", "6"], "answer": "17"}
+{"state": "Numbers a=1, b=12.", "question": "Is 1 greater than 12?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=19, b=15.", "question": "Which is larger: 19 or 15?", "options": ["19", "15"], "answer": "19"}
+{"state": "Numbers a=3, b=15.", "question": "Which is larger: 3 or 15?", "options": ["3", "15"], "answer": "15"}
+{"state": "Numbers a=11, b=10.", "question": "Which is larger: 11 or 10?", "options": ["11", "10"], "answer": "11"}
+{"state": "Numbers a=0, b=7.", "question": "Is 0 greater than 7?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=15, b=9.", "question": "Is 15 greater than 9?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=7, b=0.", "question": "Is 7 + 0 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=11, b=16.", "question": "Is 11 + 16 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=2, b=3.", "question": "Is 2 + 3 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=18, b=13.", "question": "Is 18 + 13 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=11, b=12.", "question": "Is 11 greater than 12?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=9.", "question": "Is 7 greater than 9?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=15, b=11.", "question": "Is 15 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=12, b=19.", "question": "Is 12 + 19 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=3, b=12.", "question": "Is 3 greater than 12?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=16, b=15.", "question": "Is 16 + 15 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=20, b=11.", "question": "Is 20 greater than 11?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=11, b=13.", "question": "Which is larger: 11 or 13?", "options": ["11", "13"], "answer": "13"}
+{"state": "Numbers a=11, b=12.", "question": "Is 11 + 12 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=9, b=3.", "question": "Which is larger: 9 or 3?", "options": ["9", "3"], "answer": "9"}
+{"state": "Numbers a=9, b=3.", "question": "Is 9 + 3 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=4, b=11.", "question": "Is 4 + 11 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=5, b=10.", "question": "Is 5 greater than 10?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=3.", "question": "Is 7 + 3 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=12, b=13.", "question": "Which is larger: 12 or 13?", "options": ["12", "13"], "answer": "13"}
+{"state": "Numbers a=16, b=14.", "question": "Is 16 + 14 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=19, b=7.", "question": "Which is larger: 19 or 7?", "options": ["19", "7"], "answer": "19"}
+{"state": "Numbers a=12, b=16.", "question": "Which is larger: 12 or 16?", "options": ["12", "16"], "answer": "16"}
+{"state": "Numbers a=15, b=7.", "question": "Is 15 + 7 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=0.", "question": "Is 16 + 0 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=15, b=10.", "question": "Is 15 greater than 10?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=7, b=13.", "question": "Is 7 + 13 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=18, b=1.", "question": "Is 18 greater than 1?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=2, b=8.", "question": "Is 2 + 8 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=10, b=5.", "question": "Is 10 greater than 5?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=5, b=11.", "question": "Is 5 greater than 11?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=7, b=1.", "question": "Is 7 greater than 1?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=12, b=17.", "question": "Is 12 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=4, b=3.", "question": "Is 4 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=19, b=6.", "question": "Which is larger: 19 or 6?", "options": ["19", "6"], "answer": "19"}
+{"state": "Numbers a=14, b=6.", "question": "Is 14 greater than 6?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=16, b=19.", "question": "Is 16 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=2, b=17.", "question": "Is 2 + 17 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=7, b=8.", "question": "Is 7 greater than 8?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=12, b=15.", "question": "Is 12 + 15 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=13, b=6.", "question": "Is 13 greater than 6?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=1, b=19.", "question": "Is 1 + 19 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=0, b=18.", "question": "Is 0 + 18 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=11, b=10.", "question": "Is 11 + 10 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=14, b=20.", "question": "Which is larger: 14 or 20?", "options": ["14", "20"], "answer": "20"}
+{"state": "Numbers a=19, b=16.", "question": "Is 19 greater than 16?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=8, b=3.", "question": "Is 8 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=3, b=8.", "question": "Which is larger: 3 or 8?", "options": ["3", "8"], "answer": "8"}
+{"state": "Numbers a=4, b=19.", "question": "Is 4 greater than 19?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=4, b=12.", "question": "Which is larger: 4 or 12?", "options": ["4", "12"], "answer": "12"}
+{"state": "Numbers a=18, b=10.", "question": "Is 18 greater than 10?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=13, b=16.", "question": "Is 13 greater than 16?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=3, b=17.", "question": "Which is larger: 3 or 17?", "options": ["3", "17"], "answer": "17"}
+{"state": "Numbers a=15, b=3.", "question": "Is 15 greater than 3?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=14, b=15.", "question": "Which is larger: 14 or 15?", "options": ["14", "15"], "answer": "15"}
+{"state": "Numbers a=14, b=17.", "question": "Is 14 greater than 17?", "options": ["yes", "no"], "answer": "no"}
+{"state": "Numbers a=4, b=13.", "question": "Is 4 + 13 even or odd?", "options": ["even", "odd"], "answer": "odd"}
+{"state": "Numbers a=12, b=2.", "question": "Is 12 + 2 even or odd?", "options": ["even", "odd"], "answer": "even"}
+{"state": "Numbers a=16, b=10.", "question": "Which is larger: 16 or 10?", "options": ["16", "10"], "answer": "16"}
+{"state": "Numbers a=14, b=7.", "question": "Is 14 greater than 7?", "options": ["yes", "no"], "answer": "yes"}
+{"state": "Numbers a=15, b=13.", "question": "Is 15 + 13 even or odd?", "options": ["even", "odd"], "answer": "even"}

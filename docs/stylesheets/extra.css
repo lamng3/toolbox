@@ -1,0 +1,25 @@
+/* Palette shared with the other lamng3 docs sites (hermes-docs, moira-docs). */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #0c6b52;
+  --md-primary-fg-color--light: #2f8a70;
+  --md-primary-fg-color--dark: #084838;
+  --md-accent-fg-color: #0c6b52;
+  --md-default-bg-color: #fffcf7;
+  --md-default-fg-color: #1b1916;
+  --md-code-bg-color: #f3eee4;
+  --md-typeset-a-color: #0c6b52;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #0f2a22;
+  --md-accent-fg-color: #5cc4a0;
+  --md-default-bg-color: #161512;
+  --md-code-bg-color: #211f1b;
+  --md-typeset-a-color: #5cc4a0;
+}
+
+.md-header, .md-tabs { background-color: var(--md-primary-fg-color); }
+.md-typeset h1, .md-typeset h2 { font-weight: 600; letter-spacing: -0.01em; }
+.md-typeset table:not([class]) { font-size: 0.72rem; }
+.md-typeset .grid.cards > ul > li { border-radius: 8px; }

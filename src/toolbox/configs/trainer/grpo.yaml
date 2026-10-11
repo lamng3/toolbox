@@ -1,0 +1,10 @@
+defaults:
+  - supervised
+  - _self_
+name: grpo
+batch_size: 4          # prompts per step; sequences per step = batch_size * group_size
+group_size: 8
+max_new_tokens: 16
+temperature: 1.0
+ppo_epochs: 1
+eval_batches: 2

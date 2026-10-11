@@ -1,0 +1,12 @@
+# @package _global_
+# Decision model: answer typed questions with a probability per option (AnyJev-style readout).
+# Swap objective=decision_distill (soft targets) or objective=decision_pg (RL from outcomes).
+defaults:
+  - override /model: tiny_gpt
+  - override /data: decisions
+  - override /objective: decision_ce
+  - override /trainer: supervised
+
+name: decision_tiny
+trainer: {max_steps: 200, batch_size: 32, eval_every: 50}
+optimizer: {lr: 1.0e-3}

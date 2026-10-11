@@ -1,0 +1,3 @@
+name: planetoid
+dataset: Cora  # Cora | CiteSeer | PubMed (needs `.[gnn]`)
+root: data/raw/planetoid

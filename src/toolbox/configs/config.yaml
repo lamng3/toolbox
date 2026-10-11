@@ -1,0 +1,26 @@
+# Primary config. Pick an experiment and override anything from the command line:
+#   toolbox train experiment=grpo_tiny trainer.max_steps=20 optimizer.lr=1e-4
+defaults:
+  - tokenizer: byte
+  - model: null
+  - data: null
+  - objective: null
+  - trainer: supervised
+  - optimizer: adamw
+  - scheduler: cosine
+  - reward: null
+  - advantage: null
+  - env: null
+  - strategy: auto
+  - launcher: local
+  - _self_
+  - experiment: null
+
+name: default
+seed: 42
+output_dir: runs/${name}
+
+callbacks:
+  - {name: console, log_every: "${trainer.log_every}"}
+  - {name: jsonl}
+  - {name: throughput}

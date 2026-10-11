@@ -1,0 +1,12 @@
+# @package _global_
+# Classic PPO with an actor-critic on CartPole (no extra dependencies).
+defaults:
+  - override /model: actor_critic
+  - override /trainer: ppo_env
+  - override /env: cartpole
+  - override /scheduler: constant
+
+name: ppo_cartpole
+tokenizer: null
+trainer: {max_steps: 50, log_every: 5}
+optimizer: {lr: 3.0e-4, weight_decay: 0.0}
